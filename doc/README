@@ -1,0 +1,110 @@
+#README
+########################################MAPPING PIPELINE####################################################
+Mapper1_NW.py: Extract nucleotide information from read and demultiplexing
+Mapper2_NW.py: Translating nucleotide sequence to protein sequence
+Mapper3_NW.sh: Counting the number for each unique protein sequence
+Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
+Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
+
+##########################################MISC SCRIPTS#######################################################
+BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
+#  Input file:  result/Mutfit
+#  Output file: BasicInfo.ods and FitnessDiffHD.ods
+BasicInfo2.R: Computing the correlation between different predictors
+#  Input file:  result/HD4EpiIGG*
+#  Output file  NONE
+OPTM.R: For optimization of Bmax
+
+###########################################PLOTTING SCRIPTS##################################################
+Plot1_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
+#  Input file:  result/Mutfit
+#  Output file: graph/G4Cor_*.png
+
+Plot2a_NW.R: Plot DFE as boxplot and hist for different IGG conditions and different HD groups 
+#  Input file:  result/Mutfit
+#  Output file: graph/DFEboxIGG*.png
+#               graph/DFEhistIGG*.png
+
+Plot2b_NW.R: Plot Distribution of Epistasis, fitness and expected fitness as histogram for different IGG conditions and different HD groups 
+#  Input file:  result/AllEpi
+#  Output file: graph/DEEIGG*.png
+#               graph/DEEhistIGG*.png
+#               graph/ExpfitboxIGG*.png 
+
+Plot3_NW.R: Plot the maximum predicted fitness across predictions from different types of partition vs actual fitness for HD = 4.
+#  Input file:  result/HD4EpiIGG20
+
+Plot4_NW.R: Plot the maximum and minimum fitness across different genetic backgrounds for individual single substituition
+#  Input file:  analysis/MutDiffBGI20fit
+#               analysis/FitDiffBG
+#  Output file: graph/DiffBGIGG20.png
+#               graph/DFEDiffBG.png
+
+Plot5_NW.R: Plot the maximum and minimum sign epistasis, and also give some stats about the frequency of such phenomenon
+#  Input file:  analysis/EpiDiffBGI*
+#  Output file: graph/ContextEpi*.png
+
+Plot6_NW.R: Plot the correlation result from fitness decomposition (Lei Dai result)
+
+Plot7_NW.R: Plot the results from pathway analysis, e.g. number of stucking pathways, number of permissive pathways
+#  Input file:  analysis/ShortPaths4mutsCutoff10fold
+#               analysis/ShortPaths4mutsCutoff1fold
+#  Output file: graph/PathwayDistribute.png
+#               graph/PathwayDistribute_stuck.png
+#               graph/PathwayDistribute_mono.png
+
+
+############################################ANALYSIS SCRIPTS####################################################
+Analysis1a_NW.py: Compute episasis for all partition combinations for HD = 4
+#  Input file:  result/Mutfit
+#  Output file: result/HD4EpiIGG*
+
+Analysis1b_NW.py: Compute episasis for using S1*S2*S3*S4 for all mutations, THIS SCRIPT HAS A GOOD EPISTASIS CALCULATION
+#  Input file:  result/Mutfit
+#  Output file: result/AllEpi
+
+Analysis2_NW.py: Framework for graph analysis and finding local maximum, finding accessible paths, etc.
+
+Analysis3_NW.py: Pathway analysis, e.g. count number of shortest pathways
+#  Input file:  result/Mutfit
+#  Output file: analysis/ShortPaths4muts*
+
+Analysis4_NW.py: Find fitness effect of a particular mutant in different backgrounds
+#  Input file:  result/Mutfit
+#  Output file: analysis/MutDiffBG*
+#               analysis/FitDiffBG 
+
+Analysis5_NW.py: Adapted from Analysis2.py. Print pathway parameters for each variant
+
+Analysis6_NW.py: Extract shortest pathways from data, converting to xdot/graphviz, can tune the start node and end node
+
+Analysis7_NW.py: Reciprocal sign epistasis under different backgrounds. Search for positive in one and negative in other.
+#  Input file:  result/Mutfit
+#  Output file: analysis/EpiDiffBGI*
+
+Analysis8_TMP.py: Calculate epistasis under different models, including epistatic accumulation model
+
+Analysis9_NW.py: Search for three way interactions
+#  Input file:  result/Mutfit
+#  Output file: analysis/ThreeWayEpi
+
+Analysis10_NW.py: Calculate Gini Index, Bias of Pathway
+#  Input file:  result/Mutfit
+#  Output file: analysis/PathwayParamResult
+
+Analysis11_NW.py: Global graph analysis, global max search, pathway to max search
+#  Input file:  result/Mutfit
+#  Output file: analysis/LocalMaxMuts
+#               analysis/LocalMaxClimb
+#               analysis/LocalMaxCompile
+
+Analysis12_NW.py: Plot the distance relationship between local max, fitness cutoff > 1, edge = HD 2
+#  Input file:  analysis/LocalMaxCompile
+#  Output file: xdot/LocalMax.png
+#               xdot/LocalScale.png
+#################################################Conclusion############################################################
+1. Maximum fitness increases as more mutation accumulates. That is, the best variant in HD = 4 is better than HD = 3, 2, or 1. 
+2. By partitioning these four positions, (i.e. position 39, 40, 41, and 54), actual fitness of HD = 4 can be best predicted by position 40 vs position 39-41-54. Position 41 and 54 has strong epistasis. Fitness effect of position 40 is largely additive.
+3. The fitness of certain HD = 4 variants can be much higher than predicted fitness regardless of partitioning methods.
+4. Most substitutions can be beneficial in one genetic background but deleterious in another genetic backgrounds
+5. Most HD = 4 variants are accessible from WT with multiple shortest routes
