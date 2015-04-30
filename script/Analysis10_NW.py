@@ -135,13 +135,13 @@ def monolocalmaxing(localmax,WT,fithash,condition,localmonopaths,G):
 
 def giniindexing(pathprobs):
   giniindex = 0
-  pathprobs = [float(0)]*(24-len(pathprobs))+sorted(pathprobs)
+  pathprobs = sorted(pathprobs,reverse=True)+[float(0)]*(24-len(pathprobs))
   accprobs  = [sum(pathprobs[0:i+1]) for i in range(0,len(pathprobs))]
   for n in range(len(accprobs)):
     if n == 0: giniindex += float(accprobs[n])/2
     else: giniindex += float(accprobs[n]+accprobs[n-1])/2
   maxarea   = float(len(accprobs))/2
-  giniindex = (maxarea - float(giniindex))/maxarea
+  giniindex = float(giniindex)-maxarea
   return giniindex, accprobs
   
 def pathwayparam(fithash,muts,WT,condition,outfile,HDdist,fixtype):
@@ -197,7 +197,7 @@ def main():
   fitfile    = 'result/Mutfit'
   outfile    = 'analysis/PathwayParamResult'
   condition  = 'I20fit'
-  fixtype    = 'equal' #Either 'prop' or 'equal'
+  fixtype    = 'prop' #Either 'prop' or 'equal'
   fithash    = TsvWithHeader2Hash(fitfile)
   fithash    = filterfithash(fithash, condition)  
   muts       = fithash.keys()

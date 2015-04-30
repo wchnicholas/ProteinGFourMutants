@@ -61,6 +61,7 @@ def TsvWithHeader2Hash(fitfile):
     line = line.rstrip().rsplit("\t")
     if countline == 1: header = line; continue
     mut = line[0]
+    #if mut[1] != 'D': continue ####################
     H[mut] = {}
     for i in range(1,len(line)): H[mut][header[i]] = line[i]
   infile.close()
@@ -75,11 +76,11 @@ def filterfithash(fithash,condition,fcutoff):
 def fillinmissing(fithash,missfitfile,condition):
   infile = open(missfitfile,'r')
   for line in infile.xreadlines():
-    if 'genotype_missing' in line: continue
+    if 'genotype_' in line: continue
     line = line.rstrip().rsplit("\t")
     mut  = line[0]
+    #if mut[1] != 'D': continue ####################
     fit  = exp(float(line[1]))
-    if mut in fithash.keys(): print 'Variant %d is not a missing data' % mut; sys.exit()
     fithash[mut] = {}
     fithash[mut][condition] = fit
   infile.close()
@@ -101,6 +102,7 @@ def genvarsneighbor(var):
   [variants.append(var[0]+var[1]+aa+var[3]) for aa in aas]
   [variants.append(var[0]+var[1]+var[2]+aa) for aa in aas]
   while var in variants: variants.remove(var)
+  assert(len(variants)==76)
   return variants
 
 def findlocalmax(muts, fithash, condition):
@@ -114,10 +116,9 @@ def findlocalmax(muts, fithash, condition):
     mutfit   = float(fithash[mut][condition])
     variants = genvarsneighbor(mut)
     neighfit = []
-    assert(len(variants)==76)
     for var in variants:
       if fithash.has_key(var): neighfit.append(float(fithash[var][condition])); 
-      else: neighfit.append('NA'); print 'problematic mutant: %d' % mut; break
+      else: neighfit.append('NA'); print 'problematic mutant: %s' % mut; break
     if 'NA' not in neighfit:
       assert(len(neighfit)==76)
       count += 1
@@ -202,26 +203,27 @@ def compileouting(climbout,fithash,condition,compileout):
   outfile.close()
  
 def main():
-  climbtype   = 'weight' #"random", "greedy" or "weight"
+  climbtype   = 'greedy' #"random", "greedy" or "weight"
   WT          = 'VDGV'
   mut         = 'WNWY'
   fitfile     = 'result/Mutfit'
   missfitfile = 'result/regression_missing'
-  localmaxout = 'analysis/LocalMaxMuts'
-  climbout    = 'analysis/LocalMaxClimb_'+climbtype
-  compileout  = 'analysis/LocalMaxCompile_'+climbtype
+  #missfitfile = 'result/regression_all_WT'
+  localmaxout = 'analysis/LocalMaxMuts'#+'_pair'
+  climbout    = 'analysis/LocalMaxClimb_'+climbtype#+'_pair'
+  compileout  = 'analysis/LocalMaxCompile_'+climbtype#+'_pair'
   fcutoff     = -1
   condition   = 'I20fit'
   Index2pos   = {0:39,1:40,2:41,3:54}
   fithash     = TsvWithHeader2Hash(fitfile)
   print "Total # of variants in the raw data: %d" % len(fithash.keys())
   fithash     = filterfithash(fithash,condition,fcutoff)
+  print "Total # of variants pass filter of raw data: %d" % len(fithash.keys())
   fithash     = fillinmissing(fithash,missfitfile,condition) 
   muts        = fithash.keys()
   print "Total # of variants after fill in with regression: %d" % len(muts)
   print "# of mutant pass cutoff: %d" % len(muts)
 
-  '''
   #Find Local Max
   Varwithallneighbors, localmax_count, localmax_muts = findlocalmax(muts, fithash, condition)
   print 'Total # of variants with all neighbors profiled: %s' % Varwithallneighbors,
@@ -229,7 +231,7 @@ def main():
   outfile = open(localmaxout,'w')
   [outfile.write(mut+"\t"+localmax_muts[mut]+"\n") for mut in localmax_muts.keys()]
   outfile.close()
- '''
+
   #Find Destination 
   pathtomax(muts,fithash,condition,climbout,climbtype)
   compileouting(climbout,fithash,condition,compileout)

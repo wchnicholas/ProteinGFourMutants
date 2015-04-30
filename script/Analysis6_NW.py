@@ -2,7 +2,8 @@
 import os
 import sys
 import glob
-import matplotlib.pyplot as plt
+import colorsys
+#import matplotlib.pyplot as plt
 import networkx as nx
 import operator
 from itertools import imap
@@ -55,9 +56,21 @@ def buildgraph(nodes):
   return G
 
 def labelnode(var,fit):
-  scale = int(round((2-fit)*35+30))
-  if fit >= 2: return 'grey30'
-  else: return 'grey'+str(scale)
+  #high = float(2) #Default
+  high = float(6)
+  low  = float(0)
+  mid  = float(high-low)/2+low
+  if fit > high: return colorsys.rgb_to_hsv(0, 0, 1)
+  elif fit > low: return colorsys.rgb_to_hsv(1-(fit-low)/(high-low),1-(fit-low)/(high-low),1)
+  else: return colorsys.rgb_to_hsv(1,1,1)
+  print 'Leaking'; sys.exit()
+  
+  #HIG MIDE LOW IS USED, WHITE -> YELLOW -> RED
+  if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
+  elif fit > mid: return colorsys.rgb_to_hsv(1,(high-fit)/(high-mid),0)
+  elif fit > low: return colorsys.rgb_to_hsv(1,1,(mid-fit)/(mid-low))
+  elif fit <= low: return colorsys.rgb_to_hsv(1,1,1)
+  else: print 'Something is wrong with the coloring function'; print fit; sys.exit()
 
 def drawgraph(G,outfile,fithash,WT,condition):
   outfile=open(outfile,'w')
@@ -65,14 +78,21 @@ def drawgraph(G,outfile,fithash,WT,condition):
   for var in G.nodes():
     fit = float(fithash[var][condition])
     col = labelnode(var,fit)
-    outfile.write("\t"+var+' [fillcolor='+col+', color=black, style="filled,rounded"];'+"\n")
+    col = ','.join(map(str,list(col)))
+    outfile.write("\t"+var+' [fillcolor="'+col+'", color=black, style="filled,rounded"];'+"\n")
   for E in G.edges():
     var1 = E[0]
     var2 = E[1]
+    fit2 = fithash[var2][condition]
     if hamming(WT,var1) < hamming(WT,var2):   s = var1; t = var2
     elif hamming(WT,var2) < hamming(WT,var1): s = var2; t = var1
     else: print 'Error in graph construction'; sys.exit()
-    outfile.write("\t"+s+'->'+t+' [style=bold, color=black];'+"\n")
+    fit_s = float(fithash[s][condition])
+    fit_t = float(fithash[t][condition])
+    if fit_s < fit_t:   dtype = 'forward'
+    elif fit_s > fit_t: dtype = 'back'
+    else: print 'Error in graph construction'; sys.exit()
+    outfile.write("\t"+s+'->'+t+' [style=bold, color=black, dir='+dtype+'];'+"\n")
   outfile.write('}'+"\n")
   outfile.close()
 

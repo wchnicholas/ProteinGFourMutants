@@ -70,24 +70,20 @@ def filterfithash(fithash,condition,fcutoff):
       del fithash[mut]
   return fithash
 
-def labelnode(var,fit,highcolscale):
-  high = float(highcolscale)
-  low  = float(1)
-  mid  = float(high-low)/2+low
-  if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
-  elif fit > mid: return colorsys.rgb_to_hsv(1,(high-fit)/(high-mid),0)
-  elif fit > low: return colorsys.rgb_to_hsv(1,1,(mid-fit)/(mid-low))
-  elif fit < low: return 'black'
+def labelnode(var,fit,localmaxs_ori,localmaxs_pair):
+  if var in localmaxs_ori:    return colorsys.rgb_to_hsv(0.65, 0.65, 0)
+  elif var in localmaxs_pair: return colorsys.rgb_to_hsv(0, 0, 1)
   else: print 'Something is wrong with the coloring function'; sys.exit()
 
-def drawgraph(nodes,outfile,scalefile,fithash,condition,highcolscale):
+def drawgraph(localmaxs_ori,localmaxs_pair,outfile,scalefile,fithash,condition):
+  nodes = localmaxs_ori+localmaxs_pair
   normscale = 50000
   scaling   = 4
   scalefile=open(scalefile,'w')
-  scalefile.write('strict graph{'+
-                  "\n"+"\t"+'graph [ dpi = 30 ]'+
-                  "\n"+"\t"+'rankdir=LR'+
-                  "\n"+"\t"+'node [shape=circle,label=""]'+"\n")
+  scalefile.write('strict graph{'+"\n"+
+                                  "\t"+'graph [ dpi = 35 ]'+"\n"+
+                                  "\t"+'rankdir=LR'+"\n"+
+                                  "\t"+'node [shape=circle,label=""]'+"\n")
   for basin in [500,5000,50000]:
     size  = str(float(basin)/float(normscale)*scaling)
     basin = str(basin)
@@ -95,15 +91,15 @@ def drawgraph(nodes,outfile,scalefile,fithash,condition,highcolscale):
   scalefile.write('}'+"\n")
   scalefile.close()
   outfile=open(outfile,'w')
-  #outfile.write('strict graph{'+
-  #              "\n"+"\t"+'graph [ dpi = 30 ]'+
-  #              "\n"+"\t"+'layout=fdp'+
-  #              "\n"+"\t"+'node [shape=circle,label=""]'+"\n")
-  outfile.write('strict graph{'+"\n"+"\t"+'layout=fdp'+"\n"+"\t"+'node [shape=circle]'+"\n")
+  outfile.write('strict graph{'+"\n"+
+                              "\t"+'graph [ dpi = 35 ]'+"\n"+
+                              "\t"+'layout=fdp'+"\n"+
+                              "\t"+'node [shape=circle,label=""]'+"\n")
+  #outfile.write('strict graph{'+"\n"+"\t"+'layout=fdp'+"\n"+"\t"+'node [shape=circle]'+"\n")
   for var in nodes:
     if fithash.has_key(var): fit = float(fithash[var][condition])
     else: fit = 'NA'
-    col  = labelnode(var,fit,highcolscale)
+    col  = labelnode(var,fit,localmaxs_ori,localmaxs_pair)
     col  = ','.join(map(str,list(col)))
     size = str(float(fithash[var]['basin'])/float(normscale)*scaling)
     outfile.write("\t"+var+' [fillcolor="'+col+'", color=black, style="filled,rounded", fixedsize=shape, width='+size+'];'+"\n")
@@ -113,7 +109,7 @@ def drawgraph(nodes,outfile,scalefile,fithash,condition,highcolscale):
         var1 = nodes[i]
         var2 = nodes[j]
         dist = hamming(var1,var2)
-        if dist == 2: outfile.write("\t"+var1+'--'+var2+' [style=bold, color=black];'+"\n")
+        if dist <= 2: outfile.write("\t"+var1+'--'+var2+' [style=bold, color=black];'+"\n")
   outfile.write('}'+"\n")
   outfile.close()
 
@@ -162,20 +158,33 @@ def analyzepaths(paths, fithash, condition):
   print 'fitness cost = %f' % maxfit
   return pathmaxfit.rsplit("\t")[1].rsplit('->')
 
-def main(graphfile,graphscale,localmaxfile,highcolscale):
-  print 'working on localmaxfile: %s' % localmaxfile
+def main():
+  graphfile         = 'xdot/LocalMax_combine.dot'
+  graphscale        = 'xdot/LocalScale_combine.dot'
+  localmaxfile_ori  = 'analysis/LocalMaxCompile_weight1000sim'
+  localmaxfile_pair = 'analysis/LocalMaxCompile_weight_pair1000sim'
+  print 'working on localmaxfile: %s and %s' % (localmaxfile_ori, localmaxfile_pair)
   WT           = 'VDGV'
   condition    = 'I20fit'
   fcutoff      = float(1)
   Index2pos    = {0:39,1:40,2:41,3:54}
-  localmaxhash = TsvWithHeader2Hash(localmaxfile)
-  print "Total # of variants as local max: %d" % len(localmaxhash.keys())
-  localmaxhash = filterfithash(localmaxhash,condition,fcutoff)
-  localmaxs    = localmaxhash.keys()
-  print "# of localmax pass cutoff: %d" % len(localmaxs)
+  localmaxhash_ori  = TsvWithHeader2Hash(localmaxfile_ori)
+  localmaxhash_pair = TsvWithHeader2Hash(localmaxfile_pair)
+  print "Total # of variants in original landscape as local max: %d" % len(localmaxhash_ori.keys())
+  print "Total # of variants in inferred pair landscape as local max: %d" % len(localmaxhash_pair.keys())
+  localmaxhash_ori  = filterfithash(localmaxhash_ori,condition,fcutoff)
+  localmaxhash_pair = filterfithash(localmaxhash_pair,condition,fcutoff)
+  localmaxs_ori     = localmaxhash_ori.keys()
+  localmaxs_pair    = localmaxhash_pair.keys()
+  print "# of localmax in original landscape pass cutoff: %d" % len(localmaxs_ori)
+  print "# of localmax in inferred pair pass cutoff: %d" % len(localmaxs_pair)
+  print '# of overlapping localmax: %d' % len(set(localmaxs_ori).intersection(set(localmaxs_pair)))
+  localmaxhash = localmaxhash_ori.copy()
+  localmaxhash.update(localmaxhash_pair)
 
   #Draw graphs of local maximum
-  drawgraph(localmaxs,graphfile,graphscale,localmaxhash,condition,highcolscale)
+  drawgraph(localmaxs_ori,localmaxs_pair,graphfile,graphscale,localmaxhash,condition)
+  #os.system('dot -Tpng %s -o %s' % (graphfile,graphfile.replace('.dot','_lab.png')))
   os.system('dot -Tpng %s -o %s' % (graphfile,graphfile.replace('.dot','.png')))
   os.system('dot -Tpng %s -o %s' % (graphscale,graphscale.replace('.dot','.png')))
   os.system('rm %s' % graphfile)
@@ -183,7 +192,4 @@ def main(graphfile,graphscale,localmaxfile,highcolscale):
   print 'DONE\n'
 
 if __name__ == '__main__':
-  #main('xdot/LocalMax_pair.dot','xdot/LocalScale_pair.dot','analysis/LocalMaxCompile_weight_pair1000sim',30)
-  #main('xdot/LocalMax.dot','xdot/LocalScale.dot','analysis/LocalMaxCompile_weight1000sim',8)
-  main('xdot/LocalMax_greedy.dot','xdot/LocalScale_greedy.dot','analysis/LocalMaxCompile_greedy',8)
-  main('xdot/LocalMax_random.dot','xdot/LocalScale_random.dot','analysis/LocalMaxCompile_random1000sim',8)
+  main()

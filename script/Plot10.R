@@ -11,10 +11,10 @@ plotbasindist <- function(filename,graphname){
   print (paste('total local max is', length(t$mut), sep=' '))
   }
 
-plotpathdist <- function(filename,graphname){
+plotpathdist <- function(filename,graphname,breaks){
   t <- read.table(filename,header=1)
   png(graphname)
-  hist(t$steps,xlim=c(0,35),breaks=50,col='orange')
+  hist(t$steps,xlim=c(0,35),breaks=breaks,col='orange')
   dev.off()
   print (filename)
   print (paste('Longest path has step =', max(t$steps), sep=' '))
@@ -22,5 +22,7 @@ plotpathdist <- function(filename,graphname){
 
 plotbasindist('analysis/LocalMaxCompile_greedy','graph/LocalMaxBasinvsFit_greedy.png')
 plotbasindist('analysis/LocalMaxCompile_random','graph/LocalMaxBasinvsFit_random.png')
-plotpathdist('analysis/LocalMaxClimb_greedy','graph/LocalMaxPathtoMax_greedy.png')
-plotpathdist('analysis/LocalMaxClimb_random','graph/LocalMaxPathtoMax_random.png')
+plotbasindist('analysis/LocalMaxCompile_weight','graph/LocalMaxBasinvsFit_weight.png')
+plotpathdist('analysis/LocalMaxClimb_greedy','graph/LocalMaxPathtoMax_greedy.png',50)
+plotpathdist('analysis/LocalMaxClimb_random','graph/LocalMaxPathtoMax_random.png',200)
+plotpathdist('analysis/LocalMaxClimb_weight','graph/LocalMaxPathtoMax_weight.png',100)

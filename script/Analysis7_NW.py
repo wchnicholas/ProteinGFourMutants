@@ -3,6 +3,8 @@
 import os
 import sys
 import operator
+import numpy as np
+from math import log
 from itertools import imap
 
 def floor(fit):
@@ -79,7 +81,8 @@ def genepihash(WT, Index2pos):
                                     'minepi':9999,
                                     'minm1fit':'NA',
                                     'minm2fit':'NA',
-                                    'minDfit':'NA'}
+                                    'minDfit':'NA',
+                                    'ALL':[]}
   return epihash
 
 def genvars(var,WT):
@@ -99,12 +102,15 @@ def genvars(var,WT):
     for aa1 in aas: [variants.append(var[0]+var[1]+aa1+aa2) for aa2 in aas]
   return variants
 
-def epistasiscal(var1fit,var2fit,dfit):
-  if var1fit < 0.01 or var2fit < 0.01: cap = 'NoNeg'
+def epistasiscal(var1fit,var2fit,dfit,varm1rawfit,varm2rawfit,vardrawfit):
+  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: cap = 'NoNeg'
+  if dfit < 0.01 or vardrawfit < 0.01: cap = 'NoPos'
   else: cap ='All'
   absepi = float(dfit) - floor(var1fit*var2fit) #Absolute Epistasis model
   relepi = float(floor(dfit))/floor(var1fit*var2fit) #Relative Epistasis model (default)
   if cap == 'NoNeg' and relepi < 1: relepi = 1
+  elif cap == 'NoPos' and relepi > 1: relepi = 1
+  elif varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
   else: relepi = relepi
   return absepi, relepi, cap
 
@@ -116,7 +122,6 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
     if countvar%10000 == 0: print 'Processed %d variants' % countvar
     variants = genvars(var1,WT)
     varfit   = float(fithash[var1][condition])
-    if varfit < 0.01: continue
     for var2 in variants:
       if hamming(var1, var2) != 2: continue
       mut = callmut(var1, var2, Index2pos)
@@ -133,32 +138,34 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
         WTm1fit = floor(float(fithash[WTm1][condition]))
         WTm2fit = floor(float(fithash[WTm2][condition]))
         WTdfit  = floor(float(fithash[WTd][condition]))
-        WTabsepi, WTrelepi, cap = epistasiscal(WTm1fit,WTm2fit,WTdfit)
+        WTabsepi, WTrelepi, cap = epistasiscal(WTm1fit,WTm2fit,WTdfit,WTm1fit,WTm2fit,WTdfit)
         epihash[mut]['WTDfit']  = WTdfit
         epihash[mut]['WTm1fit'] = WTm1fit
         epihash[mut]['WTm2fit'] = WTm2fit
         epihash[mut]['WTepi']   = WTrelepi
       if fithash.has_key(varm1) and fithash.has_key(varm2) and fithash.has_key(vard):
-        varm1fit = floor(float(fithash[varm1][condition]))/floor(varfit)
-        varm2fit = floor(float(fithash[varm2][condition]))/floor(varfit)
-        vardfit  = floor(float(fithash[vard][condition]))/floor(varfit)
-        varabsepi, varrelepi, cap = epistasiscal(varm1fit,varm2fit,vardfit)
+        varm1rawfit = float(fithash[varm1][condition])
+        varm2rawfit = float(fithash[varm2][condition])
+        vardrawfit  = float(fithash[vard][condition])
+        varm1fit = floor(varm1rawfit)/floor(varfit)
+        varm2fit = floor(varm2rawfit)/floor(varfit)
+        vardfit  = floor(vardrawfit)/floor(varfit)
+        varabsepi, varrelepi, cap = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit)
         epihash[mut]['count'] += 1
         signepi = ''
-        if varm1fit < 1 and varm2fit < 1 and vardfit > 1: signepi = 'pos'
-        if varm1fit > 1 and varm2fit > 1 and vardfit < 1: signepi = 'neg'
-        if varabsepi != 'NA' and varrelepi != 'NA' and signepi != '':
-          #if signepi == 'pos' and float(fithash[var2][condition]) < 0.5: continue
-          #if signepi == 'neg' and float(fithash[var1][condition]) < 0.5: continue
-          if varrelepi > epihash[mut]['maxepi'] and signepi == 'pos': 
-            epihash[mut]['PosCount'] += 1
+        #if varm1fit < 1 and varm2fit < 1 and vardfit > 1: signepi = 'pos'
+        #if varm1fit > 1 and varm2fit > 1 and vardfit < 1: signepi = 'neg'
+        if varrelepi > 1: signepi = 'pos'; epihash[mut]['PosCount'] += 1
+        if varrelepi < 1: signepi = 'neg'; epihash[mut]['NegCount'] += 1
+        if signepi == signepi:
+          epihash[mut]['ALL'].append(varrelepi)
+          if varrelepi > epihash[mut]['maxepi']:# and signepi == 'pos': 
             epihash[mut]['maxepimut'] = var1+'->'+var2
             epihash[mut]['maxepi']    = varrelepi
             epihash[mut]['maxm1fit']  = varm1fit
             epihash[mut]['maxm2fit']  = varm2fit
             epihash[mut]['maxDfit']   = vardfit
-          if varrelepi < epihash[mut]['minepi'] and signepi == 'neg': 
-            epihash[mut]['NegCount'] += 1
+          if varrelepi < epihash[mut]['minepi']:#and signepi == 'neg': 
             epihash[mut]['minepimut'] = var1+'->'+var2
             epihash[mut]['minepi'] = varrelepi
             epihash[mut]['minm1fit']  = varm1fit
@@ -170,7 +177,7 @@ def output(epihash, outfile, condition):
   outfile = open(outfile+condition,'w')
   header = ['Mut','WTEpi','WTm1Fit','WTm2Fit','WTDFit','Count','PosCount','NegCount',
             'MaxEpiMut','MaxEpi','MaxM1Fit','MaxM2Fit','MaxDFit',
-            'MinEpiMut','MinEpi','MinM1Fit','MinM2Fit','MinDFit']
+            'MinEpiMut','MinEpi','MinM1Fit','MinM2Fit','MinDFit','EpiSD','EpiRange']
   outfile.write("\t".join(header)+"\n")
   for mut in epihash.keys():
     WTepi       = epihash[mut]['WTepi']
@@ -190,26 +197,28 @@ def output(epihash, outfile, condition):
     minm1fit    = epihash[mut]['minm1fit']
     minm2fit    = epihash[mut]['minm2fit']
     minDfit     = epihash[mut]['minDfit']
+    if len(epihash[mut]['ALL']) <= 1: episd = 0
+    else: episd = np.std(map(log,epihash[mut]['ALL']))
+    if maxepi > -1 and minepi < 9999: epirange = log(float(maxepi))-log(float(minepi))
+    else: epirange = 'NA'
     out = "\t".join(map(str,[mut, WTepi,WTm1fit,WTm2fit,WTDfit,count,PosCount,NegCount,
                              maxepimut,maxepi,maxm1fit,maxm2fit,maxDfit,
-                             minepimut,minepi,minm1fit,minm2fit,minDfit]))
+                             minepimut,minepi,minm1fit,minm2fit,minDfit,episd,epirange]))
     outfile.write(out+"\n")
   outfile.close()
 
 def main():
   fitfile    = 'result/Mutfit'
   outfile    = 'analysis/EpiDiffBG'
-  conditions = ['I10fit','I20fit','I90fit']
-  conditions = ['I20fit']
+  condition  = 'I20fit'
   WT         = 'VDGV'
   Index2pos  = {0:39,1:40,2:41,3:54}
   pos2index  = {39:0,40:1,41:2,54:3}
   fithash    = TsvWithHeader2Hash(fitfile)
   fithash    = filterfithash(fithash)
-  for condition in conditions:
-    epihash    = genepihash(WT,Index2pos)
-    epihash    = analysis(fithash,epihash,WT,condition,Index2pos,pos2index)
-    output(epihash,outfile,condition)
+  epihash    = genepihash(WT,Index2pos)
+  epihash    = analysis(fithash,epihash,WT,condition,Index2pos,pos2index)
+  output(epihash,outfile,condition)
 
 if __name__ == '__main__':
   main()

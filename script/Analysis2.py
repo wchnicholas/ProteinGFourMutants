@@ -1,10 +1,17 @@
-#!/usr/bim/python
+#!/usr/bin/python
+import os
 import sys
-import matplotlib.pyplot as plt
-import networkx as nx
 import operator
+import colorsys
+import networkx as nx
+import numpy as np
+from math import exp
 from itertools import imap
-from collections import Counter
+
+def floor(fit):
+  if fit == 'NA': return 'NA'
+  elif float(fit) < 0.01: return 0.01
+  else: return float(fit)
 
 def all_shortest_paths(G, source, target, weight=None):
     if weight is not None:
@@ -29,20 +36,6 @@ def all_shortest_paths(G, source, target, weight=None):
             stack[top-1][1] += 1
             top -= 1
 
-def connected_components(G):
-    if G.is_directed():
-        raise nx.NetworkXError("""Not allowed for directed graph G.
-              Use UG=G.to_undirected() to create an undirected graph.""")
-    seen={}
-    components=[]
-    for v in G:      
-        if v not in seen:
-            c=nx.single_source_shortest_path_length(G,v)
-            components.append(list(c.keys()))
-            seen.update(c)
-    components.sort(key=len,reverse=True)            
-    return components 
-
 def hamming(str1, str2):
     assert len(str1) == len(str2)
     return sum(imap(operator.ne, str1, str2))
@@ -62,54 +55,34 @@ def TsvWithHeader2Hash(fitfile):
   infile.close()
   return H
 
-def filterfithash(fithash,condition,fcutoff):
+def filterfithash(fithash, condition):
   for mut in fithash.keys():
-    if '_' in mut or fithash[mut][condition] == 'NA' or float(fithash[mut][condition]) < float(fcutoff):
+    if fithash[mut][condition] == 'NA' or '_' in mut:
       del fithash[mut]
   return fithash
 
+def fillinmissing(fithash,missfitfile,condition):
+  infile = open(missfitfile,'r')
+  for line in infile.xreadlines():
+    if 'genotype_missing' in line: continue
+    line = line.rstrip().rsplit("\t")
+    mut  = line[0]
+    fit  = exp(float(line[1]))
+    if mut in fithash.keys(): print "Variant %s is not a missing data" % mut;  sys.exit()
+    fithash[mut] = {}
+    fithash[mut][condition] = fit
+  infile.close()
+  return fithash
+
 def labelnode(var,fit):
-  scale = int(round((2-fit)*35+30))
-  if fit >= 2: return 'grey30'
-  else: return 'grey'+str(scale)
-
-def buildgraph(muts):
-  G=nx.Graph()
-  for m1 in muts:  G.add_node(m1)
-  for m1 in muts:
-    for m2 in muts:
-      if hamming(m1,m2) == 1: G.add_edge(m1,m2)
-  return G
-
-def genvarsneighbor(var):
-  variants = []
-  aas = ['E','D','R','K','H','Q','N','S','T','P','G','C','A','V','I','L','M','F','Y','W']
-  [variants.append(aa+var[1]+var[2]+var[3]) for aa in aas]
-  [variants.append(var[0]+aa+var[2]+var[3]) for aa in aas]
-  [variants.append(var[0]+var[1]+aa+var[3]) for aa in aas]
-  [variants.append(var[0]+var[1]+var[2]+aa) for aa in aas]
-  while var in variants: variants.remove(var)
-  return variants
-
-def findlocalmax(muts, fithash, condition):
-  localmax = 0
-  count    = 0
-  process  = 0
-  for mut in muts:
-    process += 1
-    if process%10000 == 0: print 'Finished %s localmax classificiation' % process
-    mutfit   = float(fithash[mut][condition])
-    variants = genvarsneighbor(mut)
-    neighfit = []
-    assert(len(variants)==76)
-    for var in variants:
-      if fithash.has_key(var): neighfit.append(float(fithash[var][condition]))
-      else: neighfit.append('NA'); break
-    if 'NA' not in neighfit:
-      assert(len(neighfit)==76)
-      count += 1
-      if max(neighfit) < mutfit: localmax += 1
-  return count, localmax
+  high = float(2)
+  low  = float(0)
+  mid  = float(high-low)/2+low
+  if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
+  elif fit > mid: return colorsys.rgb_to_hsv(1,(high-fit)/(high-mid),0)
+  elif fit > low: return colorsys.rgb_to_hsv(1,1,(mid-fit)/(mid-low))
+  elif fit <= low: return colorsys.rgb_to_hsv(1,1,1)
+  else: print 'Something is wrong with the coloring function'; print fit; sys.exit()
 
 def drawgraph(G,outfile,fithash,WT,mut,condition):
   outfile=open(outfile,'w')
@@ -117,108 +90,59 @@ def drawgraph(G,outfile,fithash,WT,mut,condition):
   for var in G.nodes():
     fit = float(fithash[var][condition])
     col = labelnode(var,fit)
-    outfile.write("\t"+var+' [fillcolor='+col+', color=black, style="filled,rounded"];'+"\n")
+    col = ','.join(map(str,list(col)))
+    outfile.write("\t"+var+' [fillcolor="'+col+'", color=black, style="filled,rounded"];'+"\n")
   for E in G.edges():
     var1 = E[0]
     var2 = E[1]
-    if hamming(WT,var2) != hamming(WT,var1):
-      if hamming(WT,var1) < hamming(WT,var2):   s = var1; t = var2
-      elif hamming(WT,var2) < hamming(WT,var1): s = var2; t = var1
-      outfile.write("\t"+s+'->'+t+' [style=bold, color=black];'+"\n")
-    elif hamming(mut,var2) != hamming(mut,var1):
-      if hamming(mut,var1) < hamming(mut,var2):   s = var2; t = var1
-      elif hamming(mut,var2) < hamming(mut,var1): s = var1; t = var2
-      outfile.write("\t"+s+'->'+t+' [style=bold, color=black];'+"\n")
-    elif hamming(mut,var2) == hamming(mut,var1) and hamming(WT,var2) == hamming(WT,var1): 
-      outfile.write("\t"+var1+'->'+var2+' [style=bold, color=black];'+"\n")
-      outfile.write("\t"+var2+'->'+var1+' [style=bold, color=black];'+"\n")
+    if hamming(WT,var1) < hamming(WT,var2):   s = var1; t = var2
+    elif hamming(WT,var2) < hamming(WT,var1): s = var2; t = var1
+    elif hamming(WT,var2) == hamming(WT,var1):
+      if hamming(mut,var1) < hamming(mut,var2): s= var2; t = var1
+      elif hamming(mut,var2) < hamming(mut,var1): s= var1; t = var2
+      else: print 'Error in graph construction'; sys.exit()
     else: print 'Error in graph construction'; sys.exit()
+    outfile.write("\t"+s+'->'+t+' [style=bold, color=black];'+"\n")
   outfile.write('}'+"\n")
   outfile.close()
 
-def parsenodefile(nodefile, mut, WT, Index2pos):
-  infile = open(nodefile,'r')
-  paths  = {}
-  countpath = 0
-  for line in infile.xreadlines():
-    countpath += 1
-    steps = line.rstrip().rsplit(' ')
-    ID    = [str(countpath)]
-    for step in steps:
-      for n in range(len(step)):
-        if step[n] != WT[n] and step[n] != mut[n]:
-          bridgemut = WT[n]+str(Index2pos[n])+step[n]
-          if bridgemut not in ID: ID.append(bridgemut)
-    paths['-'.join(ID)] = steps
-  infile.close()
-  print 'Read in a total of %d pathways' % countpath
-  return paths
-
-def analyzepaths(paths, fithash, condition):
-  pathfit = {}
-  for ID in paths.keys():
-    minfitstep = 99
-    steps = paths[ID]
-    for step in steps:
-      fit = float(fithash[step][condition])
-      if fit < minfitstep: minfitstep = fit
-    pathfit[ID] = minfitstep
-  bridgemuts = []
-  [bridgemuts.extend(ID.rsplit('-')[1::]) for ID in paths.keys()]
-  bridgemuts = Counter(bridgemuts)
-  print 'Fitness valley of each pathway'
-  pathmaxfit = ''
-  maxfit     = -1
-  for ID in pathfit.keys():
-    print ID+"\t"+str(pathfit[ID])
-    if pathfit[ID] > maxfit: 
-      maxfit     = pathfit[ID]
-      pathmaxfit = ID+"\t"+'->'.join(paths[ID])
-  print 'Common steps:'
-  for bridgemut in bridgemuts.keys():
-    print bridgemut+"\t"+str(bridgemuts[bridgemut])
-  print "pathway with a valley with minimum fitness cost: %s" % pathmaxfit
-  print 'fitness cost = %f' % maxfit
-  return pathmaxfit.rsplit("\t")[1].rsplit('->')
+def buildgraph(nodes,fcutoff,fithash,condition):
+  G = nx.Graph()
+  [G.add_node(node) for node in nodes if float(fithash[node][condition]) >= float(fcutoff)] 
+  for n1 in G.nodes():
+    for n2 in G.nodes(): 
+      if hamming(n1,n2) == 1: G.add_edge(n1,n2)
+  return G
 
 def main():
-  WT         = 'VDGV'
-  mut        = 'WNWY'
-  fitfile    = 'result/Mutfit'
-  nodefile   = 'analysis/WNWYpathsCutoff10fold'
-  outfile    = 'WNWYpaths.dot'
-  fcutoff    = 0.1
-  condition  = 'I20fit'
-  Index2pos  = {0:39,1:40,2:41,3:54}
-  fithash    = TsvWithHeader2Hash(fitfile)
-  print "Total # of variants: %d" % len(fithash.keys())
-  fithash    = filterfithash(fithash,condition,fcutoff)
-  muts       = fithash.keys()
-  print "# of mutant pass cutoff: %d" % len(muts)
-
-  #Draw customized graphs
-  paths      = parsenodefile(nodefile, mut, WT, Index2pos)
-  usefulnodes= []
-  [usefulnodes.extend(path) for path in paths.values()]
-  usefulnodes= analyzepaths(paths, fithash, condition)
-  G          = buildgraph(usefulnodes)
-  paths = all_shortest_paths(G,WT,mut)
-  print paths
-  drawgraph(G,outfile,fithash,WT,mut,condition)
-  sys.exit()
-
-  #Find Local Max
-#  Varwithallneighbors, localmax = findlocalmax(muts, fithash, condition)
-#  print 'Total # of variants with all neighbors profiled: %s' % Varwithallneighbors,
-#  print 'Among these, # of variants as a local max: %s' % localmax
-
-  #Global Analysis
-  G          = buildgraph(muts)
-  paths = all_shortest_paths(G,WT,mut)
-  for path in paths: print path
-#  print '# of connected components: %d' % len(connected_components(G))
-#  nx.draw_circular(G)
-#  plt.savefig("TestGraph.png")
-
+  WT          = 'VDGV'
+  var         = sys.argv[1]
+  fitfile     = 'result/Mutfit'
+  missfitfile = 'result/regression_missing'
+  condition   = 'I20fit'
+  fcutoff     = float(0.45)
+  fithash     = TsvWithHeader2Hash(fitfile)
+  print "Total # of variants in the raw data: %d" % len(fithash.keys())
+  '''
+  fithash     = filterfithash(fithash,condition)
+  print "Total # of variants pass filter of raw data: %d" % len(fithash.keys())
+  fithash     = fillinmissing(fithash,missfitfile,condition)
+  muts        = fithash.keys()
+  print "Total # of variants after fill in with regression: %d" % len(muts)
+  G           = buildgraph(muts,fcutoff,fithash,condition)
+  print "%d variants pass cutoff and used for graph building" % len(G.nodes())
+  if nx.has_path(G,WT,var): paths = all_shortest_paths(G,WT,var)
+  else: print 'There is no path exist between %s and %s' % (WT, var); sys.exit()
+  for path in paths: 
+    pathfits = [float(fithash[step][condition]) for step in path]
+    print path, min(pathfits)
+  '''
+  nodes       = ['VDGV', 'LDGV', 'LNGV', 'LNGY', 'LNWY', 'WNWY']
+  outfile     = 'xdot/WT2WNWY_custom.dot'
+  custom_G    = buildgraph(nodes,fcutoff,fithash,condition)
+  drawgraph(custom_G,outfile,fithash,WT,var,condition)
+  os.system('dot -Tpng %s -o %s' % (outfile,outfile.replace('.dot','.png')))
+  os.system('rm %s' % outfile)
+  
 if __name__ == '__main__':
   main()
