@@ -1,16 +1,21 @@
 #R code
 library(stringr)
+flooring <- function(fit){
+  if (fit < 0.01){return (0.01)}
+  else {return (fit)}
+  }
+
 t <- read.table('result/Mutfit',header=1)
 t <- t[which(as.character(str_sub(t$mut,1,1)) != '_'
            & as.character(str_sub(t$mut,2,2)) != '_' 
            & as.character(str_sub(t$mut,3,3)) != '_' 
            & as.character(str_sub(t$mut,4,4)) != '_'),]
 t <- t[which(as.character(t$I10fit) != 'NA'),]
-
 F1 <- t[which(t$HD==1),]
 F2 <- t[which(t$HD==2),]
 F3 <- t[which(t$HD==3),]
 F4 <- t[which(t$HD==4),]
+
 png('graph/DFEboxIGG10.png')
 par(mfrow=c(1,4))
 ylim <- c(0,30)
@@ -23,10 +28,11 @@ dev.off()
 png('graph/DFEboxIGG20.png')
 par(mfrow=c(1,4))
 ylim <- c(0,30)
-boxplot(F1$I20fit, ylim=ylim, main='HD = 1')
-boxplot(F2$I20fit, ylim=ylim, main='HD = 2')
-boxplot(F3$I20fit, ylim=ylim, main='HD = 3')
-boxplot(F4$I20fit, ylim=ylim, main='HD = 4')
+ylim <- c(-5,4)
+boxplot(log(mapply(flooring,F1$I20fit)), ylim=ylim, main='HD = 1')
+boxplot(log(mapply(flooring,F2$I20fit)), ylim=ylim, main='HD = 2')
+boxplot(log(mapply(flooring,F3$I20fit)), ylim=ylim, main='HD = 3')
+boxplot(log(mapply(flooring,F4$I20fit)), ylim=ylim, main='HD = 4')
 dev.off()
 
 png('graph/DFEboxIGG90.png')

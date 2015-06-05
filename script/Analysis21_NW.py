@@ -1,8 +1,11 @@
 #!/usr/bim/python
+import os
 import sys
-import matplotlib.pyplot as plt
-import networkx as nx
+import random
 import operator
+import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 from math import exp
 from itertools import imap
 from collections import Counter
@@ -58,6 +61,7 @@ def TsvWithHeader2Hash(fitfile):
     line = line.rstrip().rsplit("\t")
     if countline == 1: header = line; continue
     mut = line[0]
+    #if mut[1] != 'D': continue ####################
     H[mut] = {}
     for i in range(1,len(line)): H[mut][header[i]] = line[i]
   infile.close()
@@ -72,11 +76,11 @@ def filterfithash(fithash,condition,fcutoff):
 def fillinmissing(fithash,missfitfile,condition):
   infile = open(missfitfile,'r')
   for line in infile.xreadlines():
-    if 'genotype_missing' in line: continue
+    if 'genotype_' in line: continue
     line = line.rstrip().rsplit("\t")
     mut  = line[0]
+    #if mut[1] != 'D': continue ####################
     fit  = exp(float(line[1]))
-    if mut in fithash.keys(): print 'Variant %d is not a missing data' % mut; sys.exit()
     fithash[mut] = {}
     fithash[mut][condition] = fit
   infile.close()
@@ -98,57 +102,43 @@ def genvarsneighbor(var):
   [variants.append(var[0]+var[1]+aa+var[3]) for aa in aas]
   [variants.append(var[0]+var[1]+var[2]+aa) for aa in aas]
   while var in variants: variants.remove(var)
+  assert(len(variants)==76)
   return variants
 
-def buildDigraph(G,muts,fithash,condition):
-  for mut in muts:
-    mutfit = float(fithash[mut][condition])
-    G.add_node(mut)
-    variants = genvarsneighbor(mut)
-    assert(len(variants)==76)
-    [G.add_edge(mut,var) for var in variants if float(fithash[var][condition]) > mutfit]
-  return G
-
-def searchingpath(G,localmaxs,muts,outfile):
+def varfitdist(muts, fithash, condition,outfile):
   outfile = open(outfile,'w')
-  outfile.write('mut'+"\t"+"\t".join(localmaxs)+"\n")
-  countmut = 0
+  process = 0
   for mut in muts:
-    countmut += 1
-    if countmut%1000 == 0: print 'Finish searching path for %d variants' % countmut
-    pathlengths = []
-    for localmax in localmaxs:
-      if nx.has_path(G,mut,localmax): pathlengths.append(int(nx.shortest_path_length(G, mut, localmax)))
-      else: pathlengths.append(-1)
-    outfile.write(mut+"\t"+"\t".join(map(str,pathlengths))+"\n")
+    process += 1
+    if process%10000 == 0: print 'Finished step fitness computing initiating from %s variants' % process
+    mutfit   = float(fithash[mut][condition])
+    variants = genvarsneighbor(mut)
+    neighfit = []
+    for var in variants:
+      varfit = float(fithash[var][condition])
+      outfile.write("\t".join(map(str,sorted([mut,var])))+"\t"+str(abs(varfit-mutfit))+"\n")
   outfile.close()
 
+  
+
 def main():
-  WT           = 'VDGV'
-  mut          = 'WNWY'
-  fitfile      = 'result/Mutfit'
-  missfitfile  = 'result/regression_missing'
-  localmaxfile = 'analysis/LocalMaxCompile'
-  outfile      = 'analysis/LocalMaxPathLen'
-  fcutoff      = -1
-  condition    = 'I20fit'
-  Index2pos    = {0:39,1:40,2:41,3:54}
-  fithash      = TsvWithHeader2Hash(fitfile)
+  climbtype   = 'greedy' #"random", "greedy" or "weight"
+  WT          = 'VDGV'
+  fitfile     = 'result/Mutfit'
+  missfitfile = 'result/regression_missing'
+  outfile     = 'analysis/FitStepDist'
+  fcutoff     = -1
+  condition   = 'I20fit'
+  Index2pos   = {0:39,1:40,2:41,3:54}
+  fithash     = TsvWithHeader2Hash(fitfile)
   print "Total # of variants in the raw data: %d" % len(fithash.keys())
-  fithash      = filterfithash(fithash,condition,fcutoff)
-  fithash      = fillinmissing(fithash,missfitfile,condition) 
-  muts         = fithash.keys()
+  fithash     = filterfithash(fithash,condition,fcutoff)
+  print "Total # of variants pass filter of raw data: %d" % len(fithash.keys())
+  fithash     = fillinmissing(fithash,missfitfile,condition) 
+  muts        = fithash.keys()
   print "Total # of variants after fill in with regression: %d" % len(muts)
   print "# of mutant pass cutoff: %d" % len(muts)
-  localmaxs = []
-  for line in open(localmaxfile,'r').xreadlines(): 
-    if 'mut' in line: continue
-    if float(line.rstrip().rsplit("\t")[2]) > 1: localmaxs.append(line.rstrip().rsplit("\t")[0])
-  print 'Total # of localmax = %s' % (len(localmaxs))
-  G  = nx.DiGraph()
-  G  = buildDigraph(G,muts,fithash,condition)
-  print 'Finish building digraph with %d nodes and %d edges' % (len(G.nodes()), len(G.edges()))
-  searchingpath(G,localmaxs,muts,outfile)
+  varfitdist(muts, fithash, condition,outfile)
 
 if __name__ == '__main__':
   main()

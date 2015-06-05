@@ -57,14 +57,18 @@ def buildgraph(nodes):
 
 def labelnode(var,fit):
   #high = float(2) #Default
-  high = float(6)
+  high = float(1)
   low  = float(0)
   mid  = float(high-low)/2+low
+
+  '''
+  #USE BLUE MONOTONE GRADIENT
   if fit > high: return colorsys.rgb_to_hsv(0, 0, 1)
   elif fit > low: return colorsys.rgb_to_hsv(1-(fit-low)/(high-low),1-(fit-low)/(high-low),1)
   else: return colorsys.rgb_to_hsv(1,1,1)
   print 'Leaking'; sys.exit()
-  
+  '''
+
   #HIG MIDE LOW IS USED, WHITE -> YELLOW -> RED
   if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
   elif fit > mid: return colorsys.rgb_to_hsv(1,(high-fit)/(high-mid),0)
@@ -91,7 +95,7 @@ def drawgraph(G,outfile,fithash,WT,condition):
     fit_t = float(fithash[t][condition])
     if fit_s < fit_t:   dtype = 'forward'
     elif fit_s > fit_t: dtype = 'back'
-    else: print 'Error in graph construction'; sys.exit()
+    else: dtype='none'#print 'Error in graph construction'; print fit_s, fit_t; sys.exit()
     outfile.write("\t"+s+'->'+t+' [style=bold, color=black, dir='+dtype+'];'+"\n")
   outfile.write('}'+"\n")
   outfile.close()
@@ -110,8 +114,8 @@ def main():
   nodes = generatenodes(var_end,var_start,fithash)
   G     = buildgraph(nodes)
   drawgraph(G,outfile,fithash,var_start,condition)
-  os.system('dot -Tpng %s -o %s' % (outfile,outfile.replace('.dot','.png'))) 
-  os.system('rm %s' % outfile)
+  #os.system('dot -Tpng %s -o %s' % (outfile,outfile.replace('.dot','.png'))) 
+  #os.system('rm %s' % outfile)
 
 if __name__ == '__main__':
   main()

@@ -2,6 +2,7 @@
 import sys
 import operator
 from math import exp
+from itertools import imap
 
 def hamming(str1, str2):
     assert len(str1) == len(str2)
@@ -51,14 +52,14 @@ def hashinbulkfile(infile):
     if 'aa' in line: continue
     line = line.rstrip().rsplit("\t")
     aa   = line[0]
-    mass = line[1]
+    mass = line[2]
     bhash[aa] = float(mass)
   infile.close()
   return bhash
 
 def outcompile(muts,fithash,condition,masshash,outfile):
   outfile = open(outfile,'w')
-  header  = "\t".join(['mut','fit','coremass'])
+  header  = "\t".join(['mut','HD','fit','coremass','mass39','mass40','mass41','mass54'])
   outfile.write(header+"\n")
   coreaa  = ['G','A','I','L','F','V']
   coreaa  = ['A','F']
@@ -67,11 +68,16 @@ def outcompile(muts,fithash,condition,masshash,outfile):
     resi40 = mut[1]
     resi41 = mut[2]
     resi54 = mut[3]
+    mass39 = masshash[resi39]
+    mass40 = masshash[resi40]
+    mass41 = masshash[resi41]
+    mass54 = masshash[resi54]
     #if resi39 in coreaa and resi41 in coreaa and resi54 in coreaa and resi40 == 'D':
     if True:
-      coremass = masshash[resi39]+masshash[resi41]+masshash[resi54]
+      coremass = mass39+mass41+mass54
       mutfit   = fithash[mut][condition]
-      outfile.write("\t".join(map(str,[mut,mutfit,coremass]))+"\n")
+      HD       = hamming(mut,'VDGV')
+      outfile.write("\t".join(map(str,[mut,HD,mutfit,coremass,mass39,mass40,mass41,mass54]))+"\n")
   outfile.close()
       
 def main():

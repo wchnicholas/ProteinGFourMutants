@@ -4,6 +4,7 @@ import sys
 import operator
 import networkx as nx
 import numpy as np
+from math import exp
 from itertools import imap
 
 def floor(fit):
@@ -57,6 +58,19 @@ def filterfithash(fithash, condition):
   for mut in fithash.keys():
     if fithash[mut][condition] == 'NA' or '_' in mut:
       del fithash[mut]
+  return fithash
+
+def fillinmissing(fithash,missfitfile,condition,WT):
+  infile = open(missfitfile,'r')
+  for line in infile.xreadlines():
+    if 'genotype_' in line: continue
+    line = line.rstrip().rsplit("\t")
+    mut  = line[0]
+    fit  = exp(float(line[1]))
+    fithash[mut] = {}
+    fithash[mut][condition] = fit
+    fithash[mut]['HD'] = str(hamming(mut,WT))
+  infile.close()
   return fithash
 
 def generatenodes(mut,WT,fithash):
@@ -157,7 +171,8 @@ def pathwayparam(fithash,muts,WT,condition,outfile,HDdist,fixtype):
       if 'NA' in nodes: continue
       G     = buildgraph(nodes)
       localmaxs      = localmaxing(G,WT,1,fithash,condition)
-      if len(localmaxs) == 0: continue
+      #if len(localmaxs) == 0: continue
+      if len(localmaxs) != 1: continue
       stepprobhash   = {}
       localmonopaths = {}
       localmonomaxs  = []
@@ -178,6 +193,7 @@ def pathwayparam(fithash,muts,WT,condition,outfile,HDdist,fixtype):
           nodeprobhash[localmonomax] += pathprob
       pathprobnormalscale = sum(pathprobhash.values())
       nodeprobnormalscale = sum(nodeprobhash.values())
+      print 'Scale for path normalization: %s' % pathprobnormalscale
       for path in pathprobhash.keys(): pathprobhash[path] = float(pathprobhash[path])/float(pathprobnormalscale)
       for path in pathprobhash.keys(): pathQ+=float(pathprobhash[path])**2 
       for node in nodeprobhash.keys(): nodeprobhash[node] = float(nodeprobhash[node])/float(nodeprobnormalscale)
@@ -193,16 +209,21 @@ def pathwayparam(fithash,muts,WT,condition,outfile,HDdist,fixtype):
       #outfile.write(mut+"\t"+str(giniindex)+"\t"+"\t".join(map(str,accprob_paths))+"\n")
       
 def main():
-  WT         = 'VDGV'
-  fitfile    = 'result/Mutfit'
-  outfile    = 'analysis/PathwayParamResult'
-  condition  = 'I20fit'
-  fixtype    = 'prop' #Either 'prop' or 'equal'
-  fithash    = TsvWithHeader2Hash(fitfile)
-  fithash    = filterfithash(fithash, condition)  
-  muts       = fithash.keys()
-  header     = "\t".join([])
-  outfile    = open(outfile+'.'+fixtype,'w')
+  WT          = 'VDGV'
+  fitfile     = 'result/Mutfit'
+  outfile     = 'analysis/PathwayParamResult'
+  missfitfile = 'result/regression_missing'
+  condition   = 'I20fit'
+  fixtype     = 'prop' #Either 'prop' or 'equal'
+  fithash     = TsvWithHeader2Hash(fitfile)
+  print "Total # of variants in the raw data: %d" % len(fithash.keys())
+  fithash     = filterfithash(fithash, condition)  
+  print "Total # of variants pass filter of raw data: %d" % len(fithash.keys())
+  #fithash     = fillinmissing(fithash,missfitfile,condition,WT)
+  #print "Total # of variants after fill: %d" % len(fithash.keys())
+  muts        = fithash.keys()
+  header      = "\t".join([])
+  outfile     = open(outfile+'.'+fixtype,'w')
   outfile.write("\t".join(['mut','HD','pathQ','nodeQ','localmax','monopaths','giniindex',"\t".join(map(str,range(1,25)))])+"\n")
   [pathwayparam(fithash,muts,WT,condition,outfile,HDdist,fixtype) for HDdist in [4]]
   outfile.close()

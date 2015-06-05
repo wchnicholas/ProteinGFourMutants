@@ -4,7 +4,6 @@ import sys
 import random
 import operator
 import colorsys
-import community
 import copy
 import numpy as np
 import networkx as nx
@@ -153,9 +152,9 @@ def drawgraph(G,outfile,fithash,condition):
 def main():
   WT          = 'VDGV'
   fitfile     = 'result/Mutfit'
-  outfile     = 'xdot/SciMimic_WTandBen_pair.dot'
-  #missfitfile = 'result/regression_missing'
-  missfitfile = 'result/regression_all_WT'
+  outfile     = 'xdot/SciMimic_WTandBenNoFillin.dot'
+  missfitfile = 'result/regression_missing'
+  #missfitfile = 'result/regression_all_WT'
   condition   = 'I20fit'
   fprate      = float(0.00)
   finalsize   = float(1659)
@@ -163,15 +162,18 @@ def main():
   print ("Total # of variants in the raw data: %s") % len(fithash.keys())
   fithash  = filterfithash(fithash,condition)
   print ("Total # of variants pass filter of raw data: %d") % len(fithash.keys())
-  fithash  = fillinmissing(fithash,missfitfile,condition)
-  print ("Total # of variants after fill in with regression: %d") % len(fithash.keys())
+  #fithash  = fillinmissing(fithash,missfitfile,condition)
+  #print ("Total # of variants after fill in with regression: %d") % len(fithash.keys())
   muts = [mut for mut in fithash.keys() if float(fithash[mut][condition]) >= float(fithash[WT][condition])]
-  muts = fithash.keys()                                       #For mimicking science paper
-  fits = [float(fithash[mut][condition]) for mut in muts]     #For mimicking science paper
-  muts = [x for (y,x) in sorted(zip(fits,muts),reverse=True)] #For mimicking science paper
-  muts = muts[0:int(finalsize/(1-fprate))]                    #For mimicking science paper
-  random.shuffle(muts)                                        #For mimicking science paper
-  muts = muts[0:int(finalsize)]                               #For mimicking science paper
+  muts.remove('IGEV')
+  muts.remove('IGQV')
+  muts.remove('WNWY')
+  #muts = fithash.keys()                                       #For mimicking science paper
+  #fits = [float(fithash[mut][condition]) for mut in muts]     #For mimicking science paper
+  #muts = [x for (y,x) in sorted(zip(fits,muts),reverse=True)] #For mimicking science paper
+  #muts = muts[0:int(finalsize/(1-fprate))]                    #For mimicking science paper
+  #random.shuffle(muts)                                        #For mimicking science paper
+  #muts = muts[0:int(finalsize)]                               #For mimicking science paper
   print ("%d variants pass cutoff and used for graph building") % len(muts)
   G    = buildgraph(muts,fithash,condition)
   print ("Number of connected components: %d") % len(connected_components(G))

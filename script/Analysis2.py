@@ -68,14 +68,14 @@ def fillinmissing(fithash,missfitfile,condition):
     line = line.rstrip().rsplit("\t")
     mut  = line[0]
     fit  = exp(float(line[1]))
-    if mut in fithash.keys(): print "Variant %s is not a missing data" % mut;  sys.exit()
     fithash[mut] = {}
     fithash[mut][condition] = fit
+    print mut, fit
   infile.close()
   return fithash
 
 def labelnode(var,fit):
-  high = float(2)
+  high = float(7.5)
   low  = float(0)
   mid  = float(high-low)/2+low
   if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
@@ -95,6 +95,13 @@ def drawgraph(G,outfile,fithash,WT,mut,condition):
   for E in G.edges():
     var1 = E[0]
     var2 = E[1]
+    fit1 = float(fithash[var1][condition])
+    fit2 = float(fithash[var2][condition])
+    if hamming(var1,var2) == 1:
+      if fit1 < fit2: s = var1; t = var2
+      elif fit2 < fit1: s = var2; t = var1
+      else: print 'Error in graph construction'; sys.exit()
+    '''
     if hamming(WT,var1) < hamming(WT,var2):   s = var1; t = var2
     elif hamming(WT,var2) < hamming(WT,var1): s = var2; t = var1
     elif hamming(WT,var2) == hamming(WT,var1):
@@ -102,6 +109,7 @@ def drawgraph(G,outfile,fithash,WT,mut,condition):
       elif hamming(mut,var2) < hamming(mut,var1): s= var1; t = var2
       else: print 'Error in graph construction'; sys.exit()
     else: print 'Error in graph construction'; sys.exit()
+    '''
     outfile.write("\t"+s+'->'+t+' [style=bold, color=black];'+"\n")
   outfile.write('}'+"\n")
   outfile.close()
@@ -120,15 +128,16 @@ def main():
   fitfile     = 'result/Mutfit'
   missfitfile = 'result/regression_missing'
   condition   = 'I20fit'
-  fcutoff     = float(0.45)
+  fcutoff     = float(-1)
   fithash     = TsvWithHeader2Hash(fitfile)
   print "Total # of variants in the raw data: %d" % len(fithash.keys())
-  '''
   fithash     = filterfithash(fithash,condition)
   print "Total # of variants pass filter of raw data: %d" % len(fithash.keys())
   fithash     = fillinmissing(fithash,missfitfile,condition)
   muts        = fithash.keys()
   print "Total # of variants after fill in with regression: %d" % len(muts)
+  sys.exit() ############
+  '''
   G           = buildgraph(muts,fcutoff,fithash,condition)
   print "%d variants pass cutoff and used for graph building" % len(G.nodes())
   if nx.has_path(G,WT,var): paths = all_shortest_paths(G,WT,var)
@@ -137,12 +146,12 @@ def main():
     pathfits = [float(fithash[step][condition]) for step in path]
     print path, min(pathfits)
   '''
-  nodes       = ['VDGV', 'LDGV', 'LNGV', 'LNGY', 'LNWY', 'WNWY']
-  outfile     = 'xdot/WT2WNWY_custom.dot'
+  nodes       = ['PIWI', 'FIWI', 'FIWV', 'FIFV', 'WIFV', 'WWFV', 'WWFG', 'WWLG', 'FWLG']
+  outfile     = 'xdot/WT2PIWI_custom.dot'
   custom_G    = buildgraph(nodes,fcutoff,fithash,condition)
   drawgraph(custom_G,outfile,fithash,WT,var,condition)
   os.system('dot -Tpng %s -o %s' % (outfile,outfile.replace('.dot','.png')))
-  os.system('rm %s' % outfile)
+  #os.system('rm %s' % outfile)
   
 if __name__ == '__main__':
   main()

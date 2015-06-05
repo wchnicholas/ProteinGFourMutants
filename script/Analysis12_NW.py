@@ -74,6 +74,13 @@ def labelnode(var,fit,highcolscale):
   high = float(highcolscale)
   low  = float(1)
   mid  = float(high-low)/2+low
+  
+  #USE BLUE MONOTONE GRADIENT
+  if fit > high: return colorsys.rgb_to_hsv(0, 0, 1)
+  elif fit > low: return colorsys.rgb_to_hsv(1-(fit-low)/(high-low),1-(fit-low)/(high-low),1)
+  else: return colorsys.rgb_to_hsv(1,1,1)
+  print 'Leaking'; sys.exit()
+
   if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
   elif fit > mid: return colorsys.rgb_to_hsv(1,(high-fit)/(high-mid),0)
   elif fit > low: return colorsys.rgb_to_hsv(1,1,(mid-fit)/(mid-low))
@@ -83,6 +90,7 @@ def labelnode(var,fit,highcolscale):
 def drawgraph(nodes,outfile,scalefile,fithash,condition,highcolscale):
   normscale = 50000
   scaling   = 4
+  edgecount = 0
   scalefile=open(scalefile,'w')
   scalefile.write('strict graph{'+
                   "\n"+"\t"+'graph [ dpi = 30 ]'+
@@ -113,9 +121,10 @@ def drawgraph(nodes,outfile,scalefile,fithash,condition,highcolscale):
         var1 = nodes[i]
         var2 = nodes[j]
         dist = hamming(var1,var2)
-        if dist == 2: outfile.write("\t"+var1+'--'+var2+' [style=bold, color=black];'+"\n")
+        if dist == 2: outfile.write("\t"+var1+'--'+var2+' [style=bold, color=black];'+"\n"); edgecount += 1
   outfile.write('}'+"\n")
   outfile.close()
+  print 'Total number of edge: %d' % edgecount
 
 def parsenodefile(nodefile, mut, WT, Index2pos):
   infile = open(nodefile,'r')
@@ -178,12 +187,12 @@ def main(graphfile,graphscale,localmaxfile,highcolscale):
   drawgraph(localmaxs,graphfile,graphscale,localmaxhash,condition,highcolscale)
   os.system('dot -Tpng %s -o %s' % (graphfile,graphfile.replace('.dot','.png')))
   os.system('dot -Tpng %s -o %s' % (graphscale,graphscale.replace('.dot','.png')))
-  os.system('rm %s' % graphfile)
+  #os.system('rm %s' % graphfile)
   os.system('rm %s' % graphscale)
   print 'DONE\n'
 
 if __name__ == '__main__':
   #main('xdot/LocalMax_pair.dot','xdot/LocalScale_pair.dot','analysis/LocalMaxCompile_weight_pair1000sim',30)
-  #main('xdot/LocalMax.dot','xdot/LocalScale.dot','analysis/LocalMaxCompile_weight1000sim',8)
-  main('xdot/LocalMax_greedy.dot','xdot/LocalScale_greedy.dot','analysis/LocalMaxCompile_greedy',8)
-  main('xdot/LocalMax_random.dot','xdot/LocalScale_random.dot','analysis/LocalMaxCompile_random1000sim',8)
+  main('xdot/LocalMax.dot','xdot/LocalScale.dot','analysis/LocalMaxCompile_weight1000sim',8)
+  #main('xdot/LocalMax_greedy.dot','xdot/LocalScale_greedy.dot','analysis/LocalMaxCompile_greedy',8)
+  #main('xdot/LocalMax_random.dot','xdot/LocalScale_random.dot','analysis/LocalMaxCompile_random1000sim',8)
