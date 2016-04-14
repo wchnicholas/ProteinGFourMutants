@@ -75,11 +75,13 @@ def labelnode(var,fit,highcolscale):
   low  = float(1)
   mid  = float(high-low)/2+low
   
+  '''
   #USE BLUE MONOTONE GRADIENT
   if fit > high: return colorsys.rgb_to_hsv(0, 0, 1)
   elif fit > low: return colorsys.rgb_to_hsv(1-(fit-low)/(high-low),1-(fit-low)/(high-low),1)
   else: return colorsys.rgb_to_hsv(1,1,1)
   print 'Leaking'; sys.exit()
+  '''
 
   if fit > high:  return colorsys.rgb_to_hsv(1, 0, 0)
   elif fit > mid: return colorsys.rgb_to_hsv(1,(high-fit)/(high-mid),0)
@@ -103,11 +105,9 @@ def drawgraph(nodes,outfile,scalefile,fithash,condition,highcolscale):
   scalefile.write('}'+"\n")
   scalefile.close()
   outfile=open(outfile,'w')
-  #outfile.write('strict graph{'+
-  #              "\n"+"\t"+'graph [ dpi = 30 ]'+
-  #              "\n"+"\t"+'layout=fdp'+
-  #              "\n"+"\t"+'node [shape=circle,label=""]'+"\n")
-  outfile.write('strict graph{'+"\n"+"\t"+'layout=fdp'+"\n"+"\t"+'node [shape=circle]'+"\n")
+  outfile.write('strict graph{'+"\n"+"\t"+'graph [ dpi = 30 ]'+"\n"+"\t"+'layout=fdp'+
+                 "\n"+"\t"+'node [shape=circle,label=""]'+"\n") #WITH LABEL
+  #outfile.write('strict graph{'+"\n"+"\t"+'layout=fdp'+"\n"+"\t"+'node [shape=circle]'+"\n") #WITHOUT LABEL
   for var in nodes:
     if fithash.has_key(var): fit = float(fithash[var][condition])
     else: fit = 'NA'
@@ -192,7 +192,6 @@ def main(graphfile,graphscale,localmaxfile,highcolscale):
   print 'DONE\n'
 
 if __name__ == '__main__':
-  #main('xdot/LocalMax_pair.dot','xdot/LocalScale_pair.dot','analysis/LocalMaxCompile_weight_pair1000sim',30)
-  main('xdot/LocalMax.dot','xdot/LocalScale.dot','analysis/LocalMaxCompile_weight1000sim',8)
-  #main('xdot/LocalMax_greedy.dot','xdot/LocalScale_greedy.dot','analysis/LocalMaxCompile_greedy',8)
+  #main('xdot/LocalMax.dot','xdot/LocalScale.dot','analysis/LocalMaxCompile_weight1000sim',8)
+  main('xdot/LocalMax_greedy.dot','xdot/LocalScale_greedy.dot','analysis/LocalMaxCompile_greedy',9)
   #main('xdot/LocalMax_random.dot','xdot/LocalScale_random.dot','analysis/LocalMaxCompile_random1000sim',8)

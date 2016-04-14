@@ -46,9 +46,10 @@ def outcompile(lenghash,muts,fithash,outfile):
 
 
 def main():
-  fitfile      = 'analysis/LocalMaxDes_weight_pair'
-  outfile      = 'analysis/LocalMaxDist_weight_pair'
-  lengfiles    = glob.glob('simulations/pair_weight/LocalMaxClimb_weight*')
+  simtype      = 'random' #weight or random
+  fitfile      = 'analysis/LocalMaxDes_'+simtype
+  outfile      = 'analysis/LocalMaxDist_'+simtype
+  lengfiles    = glob.glob('simulations/'+simtype+'/LocalMaxClimb_'+simtype+'*')
   lenghash     = {}
   lenghash     = lenghashing(lengfiles,lenghash)
   fithash      = fithashing(fitfile)

@@ -59,6 +59,8 @@ Plot7_NW.R: Plot the results from pathway analysis, e.g. number of stucking path
   #             graph/PathwayDistribute_stuck.png
   #             graph/PathwayDistribute_mono.png
 
+Plot14.R: Plot the heatmap for epistasis of a given substitution pair under different genetic backgrounds
+
 Heatmapping1.py: Format the data into a heatmap format, for EpiRange and EpiSD
   #Inputfile:  analysis/EpiDiffBGI20fit
   #Outputfile: analysis/HeatMapEpiRange
@@ -108,11 +110,11 @@ Analysis9_NW.py: Search for three way interactions
   #Input file:  result/Mutfit
   #Output file: analysis/ThreeWayEpi
 
-Analysis10_NW.py: Calculate Gini Index, Bias of Pathway (From WT to beneficial mutations)
+Analysis10a_NW.py: Calculate Gini Index, Bias of Pathway (From WT to beneficial mutations)
   #Input file:  result/Mutfit
   #Output file: analysis/PathwayParamResult
 
-Analysis10_NW.py: Calculate Gini Index, Bias of Pathway (From fit < 1 mutants to WT)
+Analysis10b_NW.py: Calculate Gini Index, Bias of Pathway (From fit < 1 mutants to WT)
   #Input file:  result/Mutfit
   #Output file: analysis/PathwayParamResultToWT
 
@@ -161,7 +163,8 @@ Analysis18_NW.py: Compile Mass and Fitness data
   #Output file:  analysis/BulkvsFit'
 
 Analysis19_NW.py: Mutational Step Classifier
-  #Input file: analysis/LocalMaxClimb_*
+  #Input file: analysis/LocalMaxClimb_greedy or simulations/*/LocalMaxClimb_*
+  #Output file: It produces a standard output, which is copied into analysis/StepsInfo
 
 Analysis20_NW.py: Bootstrapping the average hamming distances among randomly sampled variants
 
@@ -170,6 +173,12 @@ Analysis21_NW.py: Compute the fitness difference between neighboring variants
   #             result/regression_missing
   #Output file: analysis/FitStepDist
 
+Analysis23.py: Count accessible peaks for a given node and count how many nodes can reach a given peak
+  #Input file:  analysis/LocalMaxPathLen
+  #Output file: Doc/NodesAccessPeaks.ods
+
+EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial mutations from WT
+  #Output file: ../Doc/EvolvePotFromWT.ods
 
 #################FITNESS DECOMPOSITION###################
 FitDecomp1.py: Compute fitness information for each subgraphs
@@ -181,6 +190,7 @@ FitDecomp1.py: Compute fitness information for each subgraphs
 CompileProbDest.py: Compile simulation results in to a file, count the evolution endpoint, pathway reproducibility and diversity
   #Input file:  result/Mutfit
   #             result/regression_missing
+  #             simulations/*/LocalMaxClimb_*
   #Output file: analysis/LocalMaxDes_weight
 
 #To grep all pathway lengths into a tmp file

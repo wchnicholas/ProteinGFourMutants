@@ -1,0 +1,59 @@
+#Notes
+#CANDIDATES
+WNWY <- interesting variants, 0 paths with 0.1 cutoff
+WNMI <- interesting variants, 0 paths with 0.1 cutoff
+LNLG <- variant of L. Iners
+FRMT <- interesting variants, beneficial mutants with 4.7 fold higher than max predicted fitness
+GIFG <- interesting variants, beneficial mutants with 5.6 fold higher than max predicted fitness
+WWLG <- Actual fitness = 6.9, expected fitness from S1*S2*S3*S4 = 0.003
+ILGV to ILLH and WYGV to WYLH. Opposite reciprocal sign epistasis
+WGLG <- Actual fitness = 1.22, Smax = 0.62
+WLFA <- The quatruple mutant is the only accessible local peak at its 16 nodes subnetwork, with only 1 monopath
+IIEY <- Actual fitess = 0, 0.999 Pearson's Correlation at 1st order fourier transform 
+PLPY and GSHI <- They can have 23-step pathway to reach the local max
+
+#HEATMAP
+From analysis/Heatmap_G41LV54H or analysis/Heatmap_V39WV54H:
+  - Use matlab
+  - Max 7.5 (RGB: 212, 208, 200); 1 step below max (RGB: 255, 0, 255); Min -7.5 (0 255 255); Midpoint 0 (RGB 255 255 255)
+  - remove all tick marks and labels, no color bar
+  - set(gcf,'PaperPosition',[0 0 10 10])
+  - print('-dtiff','-r50','/Users/wchnicholas/RSun/G4/Mapping/graph/HMG41LV54H.png')
+
+From analysis/HeatMapEpiRange:
+  - Use matlab
+  - Max 13.0 (RGB: 0, 0, 0); 1 step below max (RGB: 153, 51, 0); CData = 9.41 (RGB: 255, 215, 0) 
+  - CData = 6.04 (RGB: 255, 255, 255); 1 step above min (RGB 255, 255, 255); min -0.5 (RGB 212, 208, 200)
+  - remove all tick marks and labels, no color bar
+
+From analysis/HeatMapEpiSD:
+  - Use matlab
+  - Max 2.1 (RGB: 0, 0, 0); 1 step below max (RGB: 153, 51, 0); CData = 1 (RGB: 255, 255, 255); min (RGB 255, 255, 255)
+  - remove all tick marks and labels, no color bar
+
+#LANDSCAPES
+Neigboring Correlation
+  Pairwise-infered landscape:
+    Pearson Cor = 0.3170471 (Fitness at Linear Scale)
+    Pearson Cor = 0.6888926 (Fitness at Log Scale)
+    Rank Cor    = 0.6734648
+  Original Landsape:
+    Pearson Cor = 0.4033777 (Fitness at Linear Scale)
+    Pearson Cor = 0.593438  (Fitness at Log Scale, -Inf Ignored)
+    Rank Cor    = 0.4020489
+
+#INTERSTING PATHS FROM WT (VDGV)
+END point: YIFG, YIFV, F.F.
+Away and Neutral steps: From PIWI to FWLG (greedy path in analysis/LocalMaxClimb_greedy)
+Away and Neutral steps: From VDGV to LYGV (weight path in simulations/weight/LocalMaxClimb_*)
+Away ana Neutral steps: From VDGV to VHGL (shortest path in analysis/LocalMaxEvolvePotWT)
+
+#SUBGRAPH ANALYSIS
+YGCM (low fitness) to VDGV (WT) has only 1 local peak (VDGV), but a reversal path exists, ignored for graph analysis.
+TGYE (low fitness) to VDGV (WT) has only 1 local peak (VDGV), but TGYE and TDYE has the same fitness, messed up analysis
+FPKQ (low fitness) to VDGV (WT) has only 1 local peak (VDGV), but FDKQ and VDKQ has the same fitness, messed up analysis` 
+
+#HIGH ORDER EPISTASIS EXAMPLES:
+awk {'if ($4>0.5 && $7>0.5 && $5<0.1 && $6<0.1) print'} analysis/AllPairwiseEpi
+grep G41M-V54G analysis/AllPairwiseEpi | grep .LGV #To search for high order epistasis
+WLGV to WLMG pair with LLGV to LLMG

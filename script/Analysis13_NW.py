@@ -124,12 +124,12 @@ def searchingpath(G,localmaxs,muts,outfile):
 
 def main():
   WT           = 'VDGV'
-  mut          = 'WNWY'
+  #mut          = 'WNWY'
   fitfile      = 'result/Mutfit'
-  #missfitfile  = 'result/regression_missing'
-  missfitfile  = 'result/regression_all_WT'
-  localmaxfile = 'analysis/LocalMaxCompile_greedy'+'_pair'
-  outfile      = 'analysis/LocalMaxPathLen'+'_pair'
+  missfitfile  = 'result/regression_missing'
+  #missfitfile  = 'result/regression_all_WT'
+  localmaxfile = 'analysis/LocalMaxCompile_greedy'
+  outfile      = 'analysis/LocalMaxPathLen'
   fcutoff      = -1
   condition    = 'I20fit'
   Index2pos    = {0:39,1:40,2:41,3:54}

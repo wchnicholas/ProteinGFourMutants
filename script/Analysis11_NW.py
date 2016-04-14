@@ -205,7 +205,7 @@ def compileouting(climbout,fithash,condition,compileout):
 def main():
   climbtype   = 'greedy' #"random", "greedy" or "weight"
   WT          = 'VDGV'
-  mut         = 'WNWY'
+  #mut         = 'WNWY'
   fitfile     = 'result/Mutfit'
   missfitfile = 'result/regression_missing'
   #missfitfile = 'result/regression_all_WT'

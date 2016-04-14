@@ -117,16 +117,18 @@ def genvars(var,WT):
   return variants
 
 def epistasiscal(var1fit,var2fit,dfit,varm1rawfit,varm2rawfit,vardrawfit):
-  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: cap = 'NoNeg'
-  if dfit < 0.01 or vardrawfit < 0.01: cap = 'NoPos'
-  else: cap ='All'
+  negcap = ''
+  poscap = ''
+  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: negcap = 'NoNeg'
+  if dfit < 0.01 or vardrawfit < 0.01: poscap = 'NoPos'
   absepi = float(dfit) - floor(var1fit*var2fit) #Absolute Epistasis model
   relepi = float(floor(dfit))/floor(var1fit*var2fit) #Relative Epistasis model (default)
-  if cap == 'NoNeg' and relepi < 1: relepi = 1
-  elif cap == 'NoPos' and relepi > 1: relepi = 1
-  elif varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
-  else: relepi = relepi
-  return absepi, relepi, cap
+  if negcap == 'NoNeg' and relepi < 1: relepi = 1
+  if poscap == 'NoPos' and relepi > 1: relepi = 1
+  if negcap == 'NoNeg' and poscap == 'NoPos': relepi = 1
+  if varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
+  if negcap == '' and poscap == '': relepi = relepi
+  return absepi, relepi
 
 def analysis(fithash,epihash,WT,condition,Index2pos,pos2index,epiofint):
   print 'start analysis2. Condition = %s WT = %s TotalVariant = %d' % (condition, WT, len(fithash.keys()))
@@ -154,7 +156,7 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index,epiofint):
         varm1fit = floor(varm1rawfit)/floor(varfit)
         varm2fit = floor(varm2rawfit)/floor(varfit)
         vardfit  = floor(vardrawfit)/floor(varfit)
-        varabsepi, varrelepi, cap = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit)
+        varabsepi, varrelepi = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit)
         epihash[bg][mut] = log(varrelepi)
   return epihash
 
@@ -180,7 +182,7 @@ def heatmapping2(epihash,outfile,epiofint,saalist):
   outfile.close()
 
 def main():
-  epiofint   = 'G41F-V54A'
+  epiofint   = 'V39W-V54H'
   fitfile    = 'result/Mutfit'
   outfile    = 'analysis/Heatmap_'+epiofint.replace('-','')
   condition  = 'I20fit'

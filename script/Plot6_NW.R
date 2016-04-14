@@ -14,9 +14,9 @@ plotdecompose <- function(t,graph){
     if (i%%10000 == 0){print (paste('processed',i,'variants',sep=''))}
     plot(as.numeric(t[i,2:5]),type='l',ylim=c(0,1),xlim=c(1,4),col=col[i],lwd=0.3,axes=F)
     par(new=T)
-    if (t$pearson_all_2[i] < cutoff){print (t$genotype_all[i])}
+    #if (t$pearson_all_2[i] < cutoff){print (t$genotype_all[i])}
     }
-  plot(as.numeric(avg),type='l',ylim=c(0,1),xlim=c(1,4),col='blue',lwd=0.8)
+  plot(as.numeric(avg),type='l',ylim=c(0,1),xlim=c(1,4),col='blue',lwd=3)
   dev.off()
   }
 

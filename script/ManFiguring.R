@@ -41,16 +41,17 @@ plotpathlengthdistribution <- function(){
   r <- read.table('analysis/LocalMaxDist_random',header=1)
   g <- read.table('analysis/LocalMaxClimb_greedy',header=1)
   xlim <- c(0,round(max(c(w$avgdist2max,r$avgdist2max,g$steps))))
-  ylim <- c(0,12000)
+  ylim1 <- c(0,60000)
+  ylim2 <- c(0,13000)
   col1 <- rgb(0,0,1,1/4)
   col2 <- rgb(1,0,0,1/4)
   col3 <- rgb(0,1,0,1/4)
   png(graphname,res=50,width=300,height=300)
-  hist(w$avgdist2max,xlim=xlim,breaks=50,ylim=ylim,col=col1)
+  hist(g$steps,xlim=xlim,breaks=50,col=col3,ylim=ylim1)
   par(new=T)
-  hist(r$avgdist2max,xlim=xlim,breaks=100,ylim=ylim,col=col2,axes=F)
+  hist(r$avgdist2max,xlim=xlim,breaks=100,ylim=ylim2,col=col2,axes=F)
   par(new=T)
-  hist(g$steps,xlim=xlim,breaks=50,col=col3,axes=F,ylim=c(0,41000))
+  hist(w$avgdist2max,xlim=xlim,breaks=50,ylim=ylim2,col=col1,axes=F)
   axis(4)
   #legend(0,12000,c('',''),col=c(col1,col2),pch=15,bty='n')
   dev.off()
@@ -274,7 +275,7 @@ plotsubgraphpathprob <- function(){
 
   graphname  <- 'ManFig/SubgraphPathBias_prop.png'
   t <- read.table('analysis/PathwayParamResult.prop',header=1)
-  png(graphname,res=50,width=300,height=300)
+  png(graphname)#,res=50,width=300,height=300)
   plotting(t)
   dev.off()
 
@@ -312,10 +313,12 @@ plotginihist <- function(){
 
   t <- read.table('analysis/PathwayParamResult.prop',header=1)
     graphname  <- 'ManFig/GiniHist_prop.png'
-    barplotting(graphname,t,30,130,130)
+    #barplotting(graphname,t,50,230,230)
+    histplotting(graphname,t,50,230,230,5)
   t <- read.table('analysis/PathwayParamResult.equal',header=1)
     graphname  <- 'ManFig/GiniHist_equal.png'
-    barplotting(graphname,t,50,230,230)
+    #barplotting(graphname,t,50,230,230)
+    histplotting(graphname,t,50,230,230,10)
     graphname2 <- 'ManFig/CountPathHist.png'
     png(graphname2)
     barplot(sort(t$monopaths,decreasing=T),col='black',ylab='gini index',space=1.1)
@@ -365,7 +368,7 @@ plotlocalmaxdist( <- function(){
   m <- m[which(m$I20fit>1),]
   t <- t[which(t$Id %in% m$mut),]
   p <- table(c(t$Modularity,0:6))-1
-  png(graphname)
+  png(graphname,res=60,width=350,height=250)
   barplot(p,col=c('red','orange','yellow','green','cyan','blue','purple'))
   dev.off()
   }
@@ -385,7 +388,7 @@ plotSciMimicPath <- function(){
     no  <- rbind(Class3,Class5,Class7)
     if (switch == 1){yes <- yes$avgdist2max; no <- no$avgdist2max}
     if (switch == 2){yes <- yes$steps; no <- no$steps}
-    png(graphname,res=60,width=200,height=400)
+    png(graphname,res=50,width=120,height=240)
     ylim <- c(min(yes,no),max(yes,no))
     vioplot(yes,no,ylim=ylim,col=col,range=0)
     dev.off()

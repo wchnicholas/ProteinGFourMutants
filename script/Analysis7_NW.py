@@ -103,16 +103,18 @@ def genvars(var,WT):
   return variants
 
 def epistasiscal(var1fit,var2fit,dfit,varm1rawfit,varm2rawfit,vardrawfit):
-  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: cap = 'NoNeg'
-  if dfit < 0.01 or vardrawfit < 0.01: cap = 'NoPos'
-  else: cap ='All'
+  negcap = ''
+  poscap = ''
+  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: negcap = 'NoNeg'
+  if dfit < 0.01 or vardrawfit < 0.01: poscap = 'NoPos'
   absepi = float(dfit) - floor(var1fit*var2fit) #Absolute Epistasis model
   relepi = float(floor(dfit))/floor(var1fit*var2fit) #Relative Epistasis model (default)
-  if cap == 'NoNeg' and relepi < 1: relepi = 1
-  elif cap == 'NoPos' and relepi > 1: relepi = 1
-  elif varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
-  else: relepi = relepi
-  return absepi, relepi, cap
+  if negcap == 'NoNeg' and relepi < 1: relepi = 1
+  if poscap == 'NoPos' and relepi > 1: relepi = 1
+  if negcap == 'NoNeg' and poscap == 'NoPos': relepi = 1
+  if varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
+  if negcap == '' and poscap == '': relepi = relepi
+  return absepi, relepi
 
 def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
   print 'start analysis2. Condition = %s WT = %s TotalVariant = %d' % (condition, WT, len(fithash.keys()))
@@ -124,6 +126,12 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
     varfit   = float(fithash[var1][condition])
     for var2 in variants:
       if hamming(var1, var2) != 2: continue
+      '''
+      #FOR TESTING A SPECIFIC PAIR OF DOUBLE
+      var1 = 'WLGV'
+      var2 = 'WLLH'
+      varfit   = float(fithash[var1][condition])
+      '''
       mut = callmut(var1, var2, Index2pos)
       m1  = mut.rsplit('-')[0]
       m2  = mut.rsplit('-')[1]
@@ -138,7 +146,7 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
         WTm1fit = floor(float(fithash[WTm1][condition]))
         WTm2fit = floor(float(fithash[WTm2][condition]))
         WTdfit  = floor(float(fithash[WTd][condition]))
-        WTabsepi, WTrelepi, cap = epistasiscal(WTm1fit,WTm2fit,WTdfit,WTm1fit,WTm2fit,WTdfit)
+        WTabsepi, WTrelepi = epistasiscal(WTm1fit,WTm2fit,WTdfit,WTm1fit,WTm2fit,WTdfit)
         epihash[mut]['WTDfit']  = WTdfit
         epihash[mut]['WTm1fit'] = WTm1fit
         epihash[mut]['WTm2fit'] = WTm2fit
@@ -150,7 +158,7 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
         varm1fit = floor(varm1rawfit)/floor(varfit)
         varm2fit = floor(varm2rawfit)/floor(varfit)
         vardfit  = floor(vardrawfit)/floor(varfit)
-        varabsepi, varrelepi, cap = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit)
+        varabsepi, varrelepi = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit)
         epihash[mut]['count'] += 1
         signepi = ''
         #if varm1fit < 1 and varm2fit < 1 and vardfit > 1: signepi = 'pos'
@@ -171,6 +179,10 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index):
             epihash[mut]['minm1fit']  = varm1fit
             epihash[mut]['minm2fit']  = varm2fit
             epihash[mut]['minDfit']   = vardfit
+      '''
+      #FOR TESTING A SPECIFIC PAIR OF DOUBLE
+      print log(varrelepi); sys.exit() 
+      '''
   return epihash
 
 def output(epihash, outfile, condition):

@@ -115,13 +115,15 @@ def compileout(probhash,pathhash,lenghash,outf,lmaxs,fithash,condition):
     out.append(sum([(float(rep)/float(sum(pathhash[mut].values())))**2 for rep in pathhash[mut].values()]))
     #out.append(pathdiversitycal(pathhash, mut))
     outfile.write("\t".join(map(str,out))+"\n")
+  print 'done'
   outfile.close()
 
 def main():
+  simtype = 'weight' #weight or random or greedy
   lmaxs = [l.rstrip().rsplit("\t")[0] for l in open('analysis/LocalMaxMuts','r').readlines()]
-  #files = sorted(glob.glob('simulations/pair_weight/LocalMaxClimb_weight*'))
-  files = sorted(glob.glob('analysis/LocalMaxClimb_greedy'))
-  outf  = 'analysis/LocalMaxDes_greedy'#+'_pair'
+  files = sorted(glob.glob('simulations/'+simtype+'/LocalMaxClimb_'+simtype+'*'))
+  #files = sorted(glob.glob('analysis/LocalMaxClimb_greedy'))
+  outf  = 'analysis/LocalMaxDes_'+simtype
   fitfile     = 'result/Mutfit'
   missfitfile = 'result/regression_missing'
   #missfitfile = 'result/regression_all_WT'

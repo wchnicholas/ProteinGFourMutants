@@ -25,13 +25,13 @@ def classifysteps(infile,classhash):
       if dist_after-dist_before == -1:  classhash['Forward'] += 1; ptype[0] = 0 
       elif dist_after-dist_before == 0: classhash['Neutral'] += 1; ptype[1] = 1
       elif dist_after-dist_before == 1: classhash['Reverse'] += 1; ptype[2] = 2
-    if sum(ptype) == 3 and hamming(path[0],end)==4: print path
+    #if sum(ptype) == 3 and hamming(path[0],end)==4: print path
   infile.close()
   return classhash
 
 def main():
-  #infiles   = glob.glob('simulations/weight/LocalMaxClimb_*')
-  infiles   = glob.glob('analysis/LocalMaxClimb_greedy')
+  infiles   = glob.glob('simulations/random/LocalMaxClimb_*')
+  #infiles   = glob.glob('analysis/LocalMaxClimb_greedy')
   #infiles   = ['analysis/LocalMaxEvolvePotWT']
   print "Total # of files = %d" % len(infiles)
   classhash = {'Forward':0, 'Neutral':0, 'Reverse': 0}
