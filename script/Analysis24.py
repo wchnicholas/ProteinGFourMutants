@@ -87,16 +87,18 @@ def genepihash(WT, Index2pos):
   return epihash
 
 def epistasiscal(var1fit,var2fit,dfit,varm1rawfit,varm2rawfit,vardrawfit):
-  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: cap = 'NoNeg'
-  if dfit < 0.01 or vardrawfit < 0.01: cap = 'NoPos'
-  else: cap ='All'
+  negcap = ''
+  poscap = ''
+  if var1fit < 0.01 or var2fit < 0.01 or varm1rawfit < 0.01 or varm2rawfit < 0.01: negcap = 'NoNeg'
+  if dfit < 0.01 or vardrawfit < 0.01: poscap = 'NoPos'
   absepi = float(dfit) - floor(var1fit*var2fit) #Absolute Epistasis model
   relepi = float(floor(dfit))/floor(var1fit*var2fit) #Relative Epistasis model (default)
-  if cap == 'NoNeg' and relepi < 1: relepi = 1
-  elif cap == 'NoPos' and relepi > 1: relepi = 1
-  elif varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
-  else: relepi = relepi
-  return absepi, relepi, cap
+  if negcap == 'NoNeg' and relepi < 1: relepi = 1
+  if poscap == 'NoPos' and relepi > 1: relepi = 1
+  if negcap == 'NoNeg' and poscap == 'NoPos': relepi = 1
+  if varm1rawfit < 0.01 and varm2rawfit < 0.01 and vardrawfit < 0.01: relepi = 1
+  if negcap == '' and poscap == '': relepi = relepi
+  return absepi, relepi, negcap, poscap
 
 def analysis(fithash,epihash,WT,condition,Index2pos,pos2index,outfile):
   print 'start analysis2. Condition = %s WT = %s TotalVariant = %d' % (condition, WT, len(fithash.keys()))
@@ -123,8 +125,8 @@ def analysis(fithash,epihash,WT,condition,Index2pos,pos2index,outfile):
         varm1fit = floor(varm1rawfit)/floor(varfit)
         varm2fit = floor(varm2rawfit)/floor(varfit)
         vardfit  = floor(vardrawfit)/floor(varfit)
-        varabsepi, varrelepi, cap = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit) 
-        if cap == 'All' and max(allfits) > 1 and min(allfits) < 0.2:
+        varabsepi, varrelepi, negcap, poscap = epistasiscal(varm1fit,varm2fit,vardfit,varm1rawfit,varm2rawfit,vardrawfit) 
+        if negcap=='' and poscap=='' and max(allfits) > 1 and min(allfits) < 0.2:
           outfile.write("\t".join(map(str, [mut, var1, var2, varfit, varm1rawfit, varm2rawfit, vardrawfit, varrelepi]))+"\n")
   outfile.close()
 
