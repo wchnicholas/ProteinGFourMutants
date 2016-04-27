@@ -230,11 +230,8 @@ EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial m
   #Output file: ../Doc/EvolvePotFromWT.ods
 
 #################FITNESS DECOMPOSITION###################
-<<<<<<< HEAD
 scripts in FitDecomposition are written by Lei Dai. They are for fitness decomposition analysis using fourier transform. 
 
-=======
->>>>>>> 1105a31498552a8e49ab7d06f6f006b26626e2a7
 FitDecomp1.py: Compute fitness information for each subgraphs
   #Input file:  analysis/FitnessDecompose
   #Output file: analysis/FitnessDecomposeFit
@@ -247,11 +244,7 @@ CompileProbDest.py: Compile simulation results in to a file, count the evolution
   #             simulations/*/LocalMaxClimb_*
   #Output file: analysis/LocalMaxDes_weight
 
-<<<<<<< HEAD
-###To grep all pathway lengths into a tmp file###
-=======
-#To grep all pathway lengths into a tmp file
->>>>>>> 1105a31498552a8e49ab7d06f6f006b26626e2a7
+#################To grep all pathway lengths into a tmp file##############
 awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths
 
 for m in `awk {'if ($4 == -1) print $1'} analysis/LocalMaxEvolvePotWT_pair`; do grep ^$m analysis/LocalMaxEvolvePotWT; done > tmp/pathofinterest
