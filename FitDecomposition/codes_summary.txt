@@ -1,0 +1,30 @@
+Lei Dai, 02/11/2016
+
+-input data: Mutfit
+
+-Analyze subgraph (figure 1)
+analysis_040615: pre-process (find complete subgraphs, calculate HD)
+analysis_subgraph: count peak, plot
+
+-Analyze pairwise epistasis (figure1,2)
+analysis_epistasis(random sampling), analysis_epistasis_WT(around WT)
+analysis_epistasis_plot
+function:epistasis_classify
+
+-Analyze bypass (figure2)
+analysis_bypass, analysis_bypass_plot
+
+-Fourier analysis on subgraph (figure 3)
+analysis_fourier, analysis_spectrum
+
+-Regression (figure 4)
+simple linear regression & lasso: analysis_regression, analysis_regression_order3/run2/run3 
+cross validation: analysis_cross_validation, analysis_crossvalidation_lasso
+export data: analysis_lasso_export (missing genotypes)
+plot: analysis_regression_lasso_plot, analyais_MSE,analysis_crossvalidation_lasso_plot
+
+-----------------
+saved analysis
+./analysis_040615
+./bypass
+./regression
