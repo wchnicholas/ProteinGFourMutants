@@ -1,13 +1,11 @@
 #README
 
-result/Epistasis: Epistasis value from Anders et al. 2014
-
-########################################MAPPING PIPELINE####################################################
-Mapper1_NW.py: Extract nucleotide information from read and demultiplexing
-Mapper2_NW.py: Translating nucleotide sequence to protein sequence
-Mapper3_NW.sh: Counting the number for each unique protein sequence
-Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
-Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
+#MAPPING PIPELINE
+*Mapper1_NW.py: Extract nucleotide information from read and demultiplexing
+*Mapper2_NW.py: Translating nucleotide sequence to protein sequence
+*Mapper3_NW.sh: Counting the number for each unique protein sequence
+*Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
+*Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
 
 ##########################################MISC SCRIPTS#######################################################
 BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
@@ -261,3 +259,6 @@ awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mu
 3. The fitness of certain HD = 4 variants can be much higher than predicted fitness regardless of partitioning methods.
 4. Most substitutions can be beneficial in one genetic background but deleterious in another genetic backgrounds
 5. Most HD = 4 variants are accessible from WT with multiple shortest routes
+
+
+result/Epistasis: Epistasis value from Anders et al. 2014

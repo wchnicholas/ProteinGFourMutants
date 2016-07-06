@@ -163,7 +163,7 @@ def main():
   print 'Analyzing degrees for each node'
   degreeanalysis(degfile,G,fithash,condition)
   outfile = open(outfile,'w')
-  header  = "\t".join(['mut','HD','fit','PathLength','Path'])
+  header  = "\t".join(['mut','HD','fit','PathLength','Path','Direct'])
   outfile.write(header+"\n")
   WTfit   = float(fithash[WT][condition]) 
   print 'Working %s with fitness %f' % (WT, WTfit)
@@ -179,7 +179,11 @@ def main():
     EndHD  = hamming(WT,End)
     if ReachEnds.has_key(End): Endpl = len(ReachEnds[End])-1; Endpath = '->'.join(ReachEnds[End])
     else: Endpl = -1; Endpath = 'NA'
-    outfile.write("\t".join(map(str,[End,EndHD,Endfit,Endpl,Endpath]))+"\n")
+    if Endpl == EndHD: Direct = 'Yes'
+    elif Endpl == -1: Direct = 'Inaccessible'
+    elif EndHD < Endpl: Direct = 'No'
+    else: print "Something is wrong"; sys.exit()
+    outfile.write("\t".join(map(str,[End,EndHD,Endfit,Endpl,Endpath,Direct]))+"\n")
   outfile.close()
 
 if __name__ == '__main__':
