@@ -10,21 +10,19 @@
   * Input file:  result/Mutfit
   * Output file: result/HD4EpiIGG\*
 
-Analysis1b_NW.py: Compute episasis for using S1*S2*S3*S4 for all mutations, THIS SCRIPT HAS A GOOD EPISTASIS CALCULATION
-  #Input file:  result/Mutfit
-  #Output file: result/AllEpi
+* Analysis1b\_NW.py: Compute episasis for using S1\*S2\*S3\*S4 for all mutations, THIS SCRIPT HAS A GOOD EPISTASIS CALCULATION
+  * Input file:  result/Mutfit
+  * Output file: result/AllEpi
 
-Analysis2_NW.py: Framework for graph analysis and finding local maximum, finding accessible paths, etc.
+* Analysis2\_NW.py: Framework for graph analysis and finding local maximum, finding accessible paths, etc.
 
-Analysis3a_NW.py: Pathway analysis, e.g. count number of shortest pathways from WT to beneficial mutations
-  #Input file:  result/Mutfit
-  #Output file: analysis/ShortPaths4muts*
+* Analysis3a\_NW.py: Pathway analysis, e.g. count number of shortest pathways from WT to beneficial mutations
+  * Input file:  result/Mutfit
+  * Output file: analysis/ShortPaths4muts\*
 
-Analysis3b_NW.py: Pathway analysis, e.g. count number of shortest pathways from deleterious variants to WT
-                  Restricted to subgraph with one-localmax (WT being the sole localmax)
-                  First step has to be > 0.01
-  #Input file:  result/Mutfit
-  #Output file: analysis/ShortMonoPaths4ToWT*
+* Analysis3b\_NW.py: Pathway analysis, e.g. count number of shortest pathways from deleterious variants to WT. Restricted to subgraph with one-localmax (WT being the sole localmax). First step has to be > 0.01
+  * Input file:  result/Mutfit
+  * Output file: analysis/ShortMonoPaths4ToWT\*
 
 Analysis4_NW.py: Find fitness effect of a particular mutant in different backgrounds
   #Input file:  result/Mutfit
