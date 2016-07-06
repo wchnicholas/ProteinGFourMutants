@@ -242,7 +242,7 @@ awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 2) print $1}' result/Mu
 awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 3) print $1}' result/Mutfit > BenMutHD3
 awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mutfit > BenMutHD4
 
-#MISC SCRIPTS
+#MISC SCRIPTING
 * BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
   * Input file:  result/Mutfit
   * Output file: BasicInfo.ods and FitnessDiffHD.ods
@@ -251,6 +251,8 @@ awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mu
   * Output file  NONE
 * OPTM.R: For optimization of Bmax
 * Grepping all path lengths into a tmp file
+
 	awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths
 
+#FILES
 result/Epistasis: Epistasis value from Anders et al. 2014
