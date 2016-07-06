@@ -1,11 +1,9 @@
-#README
-
 #MAPPING PIPELINE
-*Mapper1_NW.py: Extract nucleotide information from read and demultiplexing
-*Mapper2_NW.py: Translating nucleotide sequence to protein sequence
-*Mapper3_NW.sh: Counting the number for each unique protein sequence
-*Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
-*Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
+* Mapper1_NW.py: Extract nucleotide information from read and demultiplexing
+* Mapper2_NW.py: Translating nucleotide sequence to protein sequence
+* Mapper3_NW.sh: Counting the number for each unique protein sequence
+* Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
+* Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
 
 ##########################################MISC SCRIPTS#######################################################
 BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
