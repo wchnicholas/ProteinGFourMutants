@@ -5,15 +5,6 @@
 * Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
 * Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
 
-#MISC SCRIPTS
-* BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
-  * Input file:  result/Mutfit
-  * Output file: BasicInfo.ods and FitnessDiffHD.ods
-* BasicInfo2.R: Computing the correlation between different predictors
-  * Input file:  result/HD4EpiIGG\*
-  * Output file  NONE
-* OPTM.R: For optimization of Bmax
-
 ###########################################PLOTTING SCRIPTS##################################################
 Plot1_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
   #Input file:  result/Mutfit
@@ -251,12 +242,15 @@ awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 2) print $1}' result/Mu
 awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 3) print $1}' result/Mutfit > BenMutHD3
 awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mutfit > BenMutHD4
 
-#################################################Conclusion############################################################
-1. Maximum fitness increases as more mutation accumulates. That is, the best variant in HD = 4 is better than HD = 3, 2, or 1. 
-2. By partitioning these four positions, (i.e. position 39, 40, 41, and 54), actual fitness of HD = 4 can be best predicted by position 40 vs position 39-41-54. Position 41 and 54 has strong epistasis. Fitness effect of position 40 is largely additive.
-3. The fitness of certain HD = 4 variants can be much higher than predicted fitness regardless of partitioning methods.
-4. Most substitutions can be beneficial in one genetic background but deleterious in another genetic backgrounds
-5. Most HD = 4 variants are accessible from WT with multiple shortest routes
-
+#MISC SCRIPTS
+* BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
+  * Input file:  result/Mutfit
+  * Output file: BasicInfo.ods and FitnessDiffHD.ods
+* BasicInfo2.R: Computing the correlation between different predictors
+  * Input file:  result/HD4EpiIGG\*
+  * Output file  NONE
+* OPTM.R: For optimization of Bmax
+* Grepping all path lengths into a tmp file
+	awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths
 
 result/Epistasis: Epistasis value from Anders et al. 2014
