@@ -252,7 +252,7 @@ awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mu
 * OPTM.R: For optimization of Bmax
 * Grepping all path lengths into a tmp file
 
-	awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths
+	``awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths``
 
 #FILES
 result/Epistasis: Epistasis value from Anders et al. 2014
