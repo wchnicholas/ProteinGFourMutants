@@ -9,10 +9,10 @@
 * BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
   * Input file:  result/Mutfit
   * Output file: BasicInfo.ods and FitnessDiffHD.ods
-BasicInfo2.R: Computing the correlation between different predictors
-  #Input file:  result/HD4EpiIGG*
-  #Output file  NONE
-OPTM.R: For optimization of Bmax
+* BasicInfo2.R: Computing the correlation between different predictors
+  * Input file:  result/HD4EpiIGG\*
+  * Output file  NONE
+* OPTM.R: For optimization of Bmax
 
 ###########################################PLOTTING SCRIPTS##################################################
 Plot1_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
