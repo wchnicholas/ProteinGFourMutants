@@ -231,17 +231,6 @@ CompileProbDest.py: Compile simulation results in to a file, count the evolution
   #             simulations/*/LocalMaxClimb_*
   #Output file: analysis/LocalMaxDes_weight
 
-#################To grep all pathway lengths into a tmp file##############
-awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths
-
-for m in `awk {'if ($4 == -1) print $1'} analysis/LocalMaxEvolvePotWT_pair`; do grep ^$m analysis/LocalMaxEvolvePotWT; done > tmp/pathofinterest
-
-
-awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 1) print $1}' result/Mutfit > BenMutHD1
-awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 2) print $1}' result/Mutfit > BenMutHD2
-awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 3) print $1}' result/Mutfit > BenMutHD3
-awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mutfit > BenMutHD4
-
 #MISC SCRIPTING
 * BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
   * Input file:  result/Mutfit
@@ -251,7 +240,12 @@ awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mu
   * Output file  NONE
 * OPTM.R: For optimization of Bmax
 * Grepping all path lengths into a tmp file
-	``awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths``
+  * ``awk {'print $1, $2'} simulations/LocalMaxClimb_weight* | grep -v 'steps' > tmp/SimPaths``
+* Printing beneficial mutants according to hamming distance
+  * awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 1) print $1}' result/Mutfit > BenMutHD1
+  * awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 2) print $1}' result/Mutfit > BenMutHD2
+  * awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 3) print $1}' result/Mutfit > BenMutHD3
+  * awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mutfit > BenMutHD4
 
 #FILES
 result/Epistasis: Epistasis value from Anders et al. 2014
