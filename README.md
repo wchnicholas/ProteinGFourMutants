@@ -24,105 +24,116 @@
   * Input file:  result/Mutfit
   * Output file: analysis/ShortMonoPaths4ToWT\*
 
-Analysis4_NW.py: Find fitness effect of a particular mutant in different backgrounds
-  #Input file:  result/Mutfit
-  #Output file: analysis/MutDiffBG*
-  #             analysis/FitDiffBG 
+* Analysis4\_NW.py: Find fitness effect of a particular mutant in different backgrounds
+  * Input file:  result/Mutfit
+  * Output file:
+    * analysis/MutDiffBG\*
+    * analysis/FitDiffBG 
 
-Analysis5_NW.py: Adapted from Analysis2.py. Print pathway parameters for each variant
+* Analysis5\_NW.py: Adapted from Analysis2.py. Print pathway parameters for each variant
 
-Analysis6_NW.py: Extract shortest pathways from data, converting to xdot/graphviz, can tune the start node and end node
+* Analysis6\_NW.py: Extract shortest pathways from data, converting to xdot/graphviz, can tune the start node and end node
 
-Analysis7_NW.py: Search for epistasis under different backgrounds. Search for positive in one and negative in other.
-  #Input file:  result/Mutfit
-  #Output file: analysis/EpiDiffBGI*
+* Analysis7\_NW.py: Search for epistasis under different backgrounds. Search for positive in one and negative in other.
+  * Input file:  result/Mutfit
+  * Output file: analysis/EpiDiffBGI\*
 
-Analysis8_TMP.py: Calculate epistasis under different models, including epistatic accumulation model
+* Analysis8\_TMP.py: Calculate epistasis under different models, including epistatic accumulation model
 
-Analysis9_NW.py: Search for three way interactions (Unused)
-  #Input file:  result/Mutfit
-  #Output file: analysis/ThreeWayEpi
+* Analysis9\_NW.py: Search for three way interactions (Unused)
+  * Input file:  result/Mutfit
+  * Output file: analysis/ThreeWayEpi
 
-Analysis10a_NW.py: Calculate Gini Index, Bias of Pathway (From WT to beneficial mutations)
-  #Input file:  result/Mutfit
-  #Output file: analysis/PathwayParamResult
+* Analysis10a\_NW.py: Calculate Gini Index, Bias of Pathway (From WT to beneficial mutations)
+  * Input file:  result/Mutfit
+  * Output file: analysis/PathwayParamResult
 
-Analysis10b_NW.py: Calculate Gini Index, Bias of Pathway (From fit < 1 mutants to WT)
-  #Input file:  result/Mutfit
-  #Output file: analysis/PathwayParamResultToWT
+* Analysis10b\_NW.py: Calculate Gini Index, Bias of Pathway (From fit < 1 mutants to WT)
+  * Input file:  result/Mutfit
+  * Output file: analysis/PathwayParamResultToWT
 
-Analysis11_NW.py: Global graph analysis, global max search, pathway to max search
-  #Input file:  result/Mutfit
-  #Output file: analysis/LocalMaxMuts
-  #             analysis/LocalMaxClimb
-  #             analysis/LocalMaxCompile
+* Analysis11\_NW.py: Global graph analysis, global max search, pathway to max search
+  * Input file:  result/Mutfit
+  * Output file:
+    * analysis/LocalMaxMuts
+    * analysis/LocalMaxClimb
+    * analysis/LocalMaxCompile
 
-Analysis11sim_NW.py: A high-throughput computing version of Analysis11_NW.py
+* Analysis11sim\_NW.py: A high-throughput computing version of Analysis11\_NW.py
 
-Analysis12_NW.py: Plot the distance relationship between local max, fitness cutoff > 1, edge = HD 2
-  #Input file:  analysis/LocalMaxCompile
-  #Output file: xdot/LocalMax.png
-  #             xdot/LocalScale.png
+* Analysis12\_NW.py: Plot the distance relationship between local max, fitness cutoff > 1, edge = HD 2
+  * Input file:  analysis/LocalMaxCompile
+  * Output file:
+    * xdot/LocalMax.png
+    * xdot/LocalScale.png
 
-Analysis12b_NW.py: Plot the distance relationship between local max from both inferred 2nd order landscape and original landscape
-  #Input file:  analysis/LocalMaxCompile_greedy
-  #             analysis/LocalMaxCompile_greedy_pair
-  #Output file: xdot/LocalMax_combine.png
-  #             xdot/LocalScale_combine.png
+* Analysis12b\_NW.py: Plot the distance relationship between local max from both inferred 2nd order landscape and original landscape
+  * Input file:
+    * analysis/LocalMaxCompile\_greedy
+    * analysis/LocalMaxCompile\_greedy\_pair
+  * Output file:
+    * xdot/LocalMax\_combine.png
+    * xdot/LocalScale\_combine.png
 
-Analysis13_NW.py: Find minimum pathlength (monotonic) to those local max with a fitness of > 1
-  #Input file:  result/Mutfit
-  #             result/regression_missing
-  #             analysis/LocalMaxCompile_greedy
-  #Outputfile:  analysis/LocalMaxPathLen
+* Analysis13\_NW.py: Find minimum pathlength (monotonic) to those local max with a fitness of > 1
+  * Input file:
+    * result/Mutfit
+    * result/regression\_missing
+    * analysis/LocalMaxCompile\_greedy
+  * Outputfile: analysis/LocalMaxPathLen
 
-Analysis14_NW.py: Compute the path length information (i.e. avg, min, max) from the simulation output
-  #Input file:   simulations/*/LocalMaxClimb*
-  #              analysis/LocalMaxDes_weight_pair
-  #Output file:  analysis/LocalMaxDist_weight_pair
+* Analysis14\_NW.py: Compute the path length information (i.e. avg, min, max) from the simulation output
+  * Input file:
+    * simulations/\*/LocalMaxClimb\*
+    * analysis/LocalMaxDes\_weight\_pair
+  * Output file:  analysis/LocalMaxDist\_weight\_pair
 
-Analysis15*_NW.py: Caculate the evolution potential of each variant (how many variants it can reach by upward path)
-  #Input file:   result/Mutfit
-  #              result/regression_missing
-  #Output file:  analysis/LocalMaxEvolvePotSampled (Analysis15_NW.py)
-  #              analysis/LocalMaxEvolvePotR*      (Analysis15R_NW.py)
-  #              analysis/LocalMaxEvolvePotWT      (Analysis15WT_NW.py)
+* Analysis15\*\_NW.py: Caculate the evolution potential of each variant (how many variants it can reach by upward path)
+  * Input file:
+    * result/Mutfit
+    * result/regression_missing
+  * Output file:
+    * analysis/LocalMaxEvolvePotSampled (Analysis15\_NW.py)
+    * analysis/LocalMaxEvolvePotR\*      (Analysis15R\_NW.py)
+    * analysis/LocalMaxEvolvePotWT      (Analysis15WT\_NW.py)
 
-Analysis16_NW.py: Compute the neighbor correlation of the entire landscape
+* Analysis16\_NW.py: Compute the neighbor correlation of the entire landscape
 
-Analysis17.py: Search for rerouting paths
+* Analysis17.py: Search for rerouting paths
 
-Analysis18_NW.py: Compile Mass and Fitness data
-  #Input file:   result/Mutfit'
-  #              doc/AAmass
-  #Output file:  analysis/BulkvsFit'
+* Analysis18\_NW.py: Compile Mass and Fitness data
+  * Input file: 
+    * result/Mutfit
+    * doc/AAmass
+  * Output file: analysis/BulkvsFit
 
-Analysis19_NW.py: Mutational Step Classifier
-  #Input file: analysis/LocalMaxClimb_greedy or simulations/*/LocalMaxClimb_*
-  #Output file: It produces a standard output, which is copied into analysis/StepsInfo
+* Analysis19\_NW.py: Mutational Step Classifier
+  * Input file: analysis/LocalMaxClimb\_greedy or simulations/\*/LocalMaxClimb\_\*
+  * Output file: It produces a standard output, which is copied into analysis/StepsInfo
 
-Analysis20_NW.py: Bootstrapping the average hamming distances among randomly sampled variants
+* Analysis20\_NW.py: Bootstrapping the average hamming distances among randomly sampled variants
 
-Analysis21_NW.py: Compute the fitness difference between neighboring variants
-  #Input file:  result/Mutfit
-  #             result/regression_missing
-  #Output file: analysis/FitStepDist
+* Analysis21\_NW.py: Compute the fitness difference between neighboring variants
+  * Input file:  result/Mutfit
+  *             result/regression\_missing
+  * Output file: analysis/FitStepDist
 
-Analysis22.py: Compile the endpoint reproducibility for each variant
-  #Input file: simulations/\*/LocalMaxClimb_\*
-  #            analysis/LocalMaxDes_\*
-  #Output file: analysis/RepTraj_\*
+* Analysis22.py: Compile the endpoint reproducibility for each variant
+  * Input file:
+    * simulations/\*/LocalMaxClimb\_\*
+    * analysis/LocalMaxDes\_\*
+  * Output file: analysis/RepTraj\_\*
 
-Analysis23.py: Count accessible peaks for a given node and count how many nodes can reach a given peak
-  #Input file:  analysis/LocalMaxPathLen
-  #Output file: Doc/NodesAccessPeaks.ods
+* Analysis23.py: Count accessible peaks for a given node and count how many nodes can reach a given peak
+  * Input file:  analysis/LocalMaxPathLen
+  * Output file: Doc/NodesAccessPeaks.ods
 
-Analysis24.py: Customize search for epistasis pair of interest
-  #Input file: result/Mutfit 
-  #Output file: analysis/AllPairwiseEpi
+* Analysis24.py: Customize search for epistasis pair of interest
+  * Input file: result/Mutfit 
+  * Output file: analysis/AllPairwiseEpi
 
-EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial mutations from WT
-  #Output file: ../Doc/EvolvePotFromWT.ods
+* EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial mutations from WT
+  * Output file: ../Doc/EvolvePotFromWT.ods
 
 #FITNESS DECOMPOSITION
 scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomposition analysis using fourier transform. 
@@ -140,94 +151,106 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
   * Output file: analysis/LocalMaxDes\_weight
 
 #PLOTTING SCRIPTS
-Plot1_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
-  #Input file:  result/Mutfit
-  #Output file: graph/G4Cor_*.png
+* Plot1\_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
+  * Input file: result/Mutfit
+  * Output file: graph/G4Cor\_\*.png
 
-Plot2a_NW.R: Plot DFE as boxplot and hist for different IGG conditions and different HD groups 
-  #Input file:  result/Mutfit
-  #Output file: graph/DFEboxIGG*.png
-  #             graph/DFEhistIGG*.png
+* Plot2a\_NW.R: Plot DFE as boxplot and hist for different IGG conditions and different HD groups 
+  * Input file: result/Mutfit
+  * Output file:
+    * graph/DFEboxIGG\*.png
+    * graph/DFEhistIGG\*.png
 
-Plot2b_NW.R: Plot Distribution of Epistasis, fitness and expected fitness as histogram for different IGG conditions and different HD groups 
-  #Input file:  result/AllEpi
-  #Output file: graph/DEEIGG*.png
-  #             graph/DEEhistIGG*.png
-  #             graph/ExpfitboxIGG*.png 
+* Plot2b\_NW.R: Plot Distribution of Epistasis, fitness and expected fitness as histogram for different IGG conditions and different HD groups 
+  * Input file:  result/AllEpi
+  * Output file:
+    * graph/DEEIGG\*.png
+    * graph/DEEhistIGG\*.png
+    * graph/ExpfitboxIGG\*.png 
 
-Plot3_NW.R: Plot the maximum predicted fitness across predictions from different types of partition vs actual fitness for HD = 4.
-  #Input file:  result/HD4EpiIGG20
+* Plot3\_NW.R: Plot the maximum predicted fitness across predictions from different types of partition vs actual fitness for HD = 4.
+  * Input file: result/HD4EpiIGG20
 
-Plot4_NW.R: Plot the maximum and minimum fitness across different genetic backgrounds for individual single substituition
-  #Input file:  analysis/MutDiffBGI20fit
-  #             analysis/FitDiffBG
-  #Output file: graph/DiffBGIGG20.png
-  #             graph/DFEDiffBG.png
+* Plot4\_NW.R: Plot the maximum and minimum fitness across different genetic backgrounds for individual single substituition
+  * Input file:
+    * analysis/MutDiffBGI20fit
+    * analysis/FitDiffBG
+  * Output file:
+    * graph/DiffBGIGG20.png
+    * graph/DFEDiffBG.png
 
-Plot5_NW.R: Plot the maximum and minimum epistasis, and also give some stats about the frequency of such phenomenon
-  #Input file:  analysis/EpiDiffBGI*
-  #Output file: graph/ContextEpi*.png
+* Plot5\_NW.R: Plot the maximum and minimum epistasis, and also give some stats about the frequency of such phenomenon
+  * Input file:  analysis/EpiDiffBGI\*
+  * Output file: graph/ContextEpi\*.png
 
-Plot6_NW.R: Plot the correlation result from fitness decomposition (Lei Dai result)
-  #Input file:  analysis/FitnessDecompose
-  #Output file: graph/FitnessDecompHist.png
-  #             graph/FitnessDecomp.png
+* Plot6\_NW.R: Plot the correlation result from fitness decomposition
+  * Input file:  analysis/FitnessDecompose
+  * Output file:
+    * graph/FitnessDecompHist.png
+    * graph/FitnessDecomp.png
 
-Plot7_NW.R: Plot the results from pathway analysis, e.g. number of stucking pathways, number of permissive pathways
-  #Input file:  analysis/ShortPaths4mutsCutoff10fold
-  #             analysis/ShortPaths4mutsCutoff1fold
-  #Output file: graph/PathwayDistribute.png
-  #             graph/PathwayDistribute_stuck.png
-  #             graph/PathwayDistribute_mono.png
+* Plot7\_NW.R: Plot the results from pathway analysis, e.g. number of stucking pathways, number of permissive pathways
+  * Input file:
+    * analysis/ShortPaths4mutsCutoff10fold
+    * analysis/ShortPaths4mutsCutoff1fold
+  * Output file:
+    * graph/PathwayDistribute.png
+    * graph/PathwayDistribute\_stuck.png
+    * graph/PathwayDistribute\_mono.png
 
-Plot8.R: Unfinished
+* Plot8.R: Unfinished/Unused
 
-Plot9.R: Unfinished
+* Plot9.R: Unfinished/Unused
 
-Plot10.R: 1. Plot the relationship between basin size and fitness of the local maximums.
-          2. Plot the number of step to local maximums from each variant
-  #Input file: analysis/LocalMaxCompile_*
-  #            analysis/LocalMaxClimb_*
-  #Output file: graph/LocalMaxBasinvsFit_*.png
-  #             graph/LocalMaxPathtoMax_greedy.png
+* Plot10.R: Plot the relationship between basin size and fitness of the local maximums and also plot the number of step to local maximums from each variant
+  * Input file: 
+    * analysis/LocalMaxCompile\_\*
+    * analysis/LocalMaxClimb\_\*
+  * Output file:
+    * graph/LocalMaxBasinvsFit\_\*.png
+    * graph/LocalMaxPathtoMax\_greedy.png
 
-Plot11.R: Plot reproducibility, entropy, evolutionary potential
-  #Input file: analysis/LocalMaxPathLen
-  #            analysis/LocalMaxMuts
-  #             analysis/LocalMaxDes_random
-  #Output file: graph/LocalMax15accessbox.png
-  #             graph/LocalMax15accesshist.png
-  #             graph/LocalMaxDesReprodAll_*.png
-  #             graph/LocalMaxPathReprodAll_*.png
-  #             graph/LocalMaxDesReprodBenMut_*.png
-  #             graph/LocalMaxPathReprodBenMut_*.png
-  #             graph/LocalMaxDes_lowpeak.png
+* Plot11.R: Plot reproducibility, entropy, evolutionary potential
+  * Input file:
+    * analysis/LocalMaxPathLen
+    * analysis/LocalMaxMuts
+    * analysis/LocalMaxDes\_random
+  * Output file:
+    * graph/LocalMax15accessbox.png
+    * graph/LocalMax15accesshist.png
+    * graph/LocalMaxDesReprodAll\_\*.png
+    * graph/LocalMaxPathReprodAll\_\*.png
+    * graph/LocalMaxDesReprodBenMut\_\*.png
+    * graph/LocalMaxPathReprodBenMut\_\*.png
+    * graph/LocalMaxDes\_lowpeak.png
 
-Plot12.R: Plot the fraction of reachable beneficial variants. 
-  #Input file: analysis/LocalMaxEvolveAll
-  #            analysis/LocalMaxEvolveAll_pair
-  #Output file: graph/LocalMaxEvolvePot
+* Plot12.R: Plot the fraction of reachable beneficial variants. 
+  * Input file:
+    * analysis/LocalMaxEvolveAll
+    * analysis/LocalMaxEvolveAll\_pair
+  * Output file: graph/LocalMaxEvolvePot
 
-Plot13.R: Plot entropy along mutational trajectories
-  #Input file: analysis/RepTraj_weight
-  #Output file: graph/TrackingEn_weight.png
+* Plot13.R: Plot entropy along mutational trajectories
+  * Input file: analysis/RepTraj\_weight
+  * Output file: graph/TrackingEn\_weight.png
 
-Plot14.R: Plot the heatmap for epistasis of a given substitution pair under different genetic backgrounds
+* Plot14.R: Plot the heatmap for epistasis of a given substitution pair under different genetic backgrounds
 
-ManFiguring.R: Plotting figures for manuscript
+* ManFiguring.R: Plotting figures for manuscript
 
-Heatmapping1.py: Format the data into a heatmap format, for EpiRange and EpiSD
-  #Inputfile:  analysis/EpiDiffBGI20fit
-  #Outputfile: analysis/HeatMapEpiRange
-  #            analysis/HeatMapEpiSD
+* Heatmapping1.py: Format the data into a heatmap format, for EpiRange and EpiSD
+  * Inputfile:  analysis/EpiDiffBGI20fit
+  * Outputfile:
+    * analysis/HeatMapEpiRange
+    * analysis/HeatMapEpiSD
 
-Heatmapping2.py: Format the data into a heatmap format, for a given mutation pair under all possible genetic backgrounds
-  #Inputfile:  result/Mutfit
-  #Outputfile: analysis/Heatmap_*
+* Heatmapping2.py: Format the data into a heatmap format, for a given mutation pair under all possible genetic backgrounds
+  * Inputfile:  result/Mutfit
+  * Outputfile: analysis/Heatmap\_\*
 
-Heatmapping3.py: Clustering mutant (Unused)
-  #Input file: analysis/LocalMaxDes_*
-  #Outputfile: analysis/LocalMaxDesCluster_*
+* Heatmapping3.py: Clustering mutant (Unused)
+  * Input file: analysis/LocalMaxDes\_\*
+  * Outputfile: analysis/LocalMaxDesCluster\_\*
 
 #MISC SCRIPTING
 * BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
