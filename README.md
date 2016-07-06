@@ -5,10 +5,10 @@
 * Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
 * Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
 
-##########################################MISC SCRIPTS#######################################################
-BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
-  #Input file:  result/Mutfit
-  #Output file: BasicInfo.ods and FitnessDiffHD.ods
+#MISC SCRIPTS
+* BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
+  * Input file:  result/Mutfit
+  * Output file: BasicInfo.ods and FitnessDiffHD.ods
 BasicInfo2.R: Computing the correlation between different predictors
   #Input file:  result/HD4EpiIGG*
   #Output file  NONE
