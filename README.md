@@ -1,104 +1,14 @@
 #MAPPING PIPELINE
-* Mapper1_NW.py: Extract nucleotide information from read and demultiplexing
-* Mapper2_NW.py: Translating nucleotide sequence to protein sequence
-* Mapper3_NW.sh: Counting the number for each unique protein sequence
-* Mapper4_NW.py: Combine count information from different samples into one file, also compute hamming distance
-* Mapper5_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
+* Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing
+* Mapper2\_NW.py: Translating nucleotide sequence to protein sequence
+* Mapper3\_NW.sh: Counting the number for each unique protein sequence
+* Mapper4\_NW.py: Combine count information from different samples into one file, also compute hamming distance
+* Mapper5\_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
 
-###########################################PLOTTING SCRIPTS##################################################
-Plot1_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
-  #Input file:  result/Mutfit
-  #Output file: graph/G4Cor_*.png
-
-Plot2a_NW.R: Plot DFE as boxplot and hist for different IGG conditions and different HD groups 
-  #Input file:  result/Mutfit
-  #Output file: graph/DFEboxIGG*.png
-  #             graph/DFEhistIGG*.png
-
-Plot2b_NW.R: Plot Distribution of Epistasis, fitness and expected fitness as histogram for different IGG conditions and different HD groups 
-  #Input file:  result/AllEpi
-  #Output file: graph/DEEIGG*.png
-  #             graph/DEEhistIGG*.png
-  #             graph/ExpfitboxIGG*.png 
-
-Plot3_NW.R: Plot the maximum predicted fitness across predictions from different types of partition vs actual fitness for HD = 4.
-  #Input file:  result/HD4EpiIGG20
-
-Plot4_NW.R: Plot the maximum and minimum fitness across different genetic backgrounds for individual single substituition
-  #Input file:  analysis/MutDiffBGI20fit
-  #             analysis/FitDiffBG
-  #Output file: graph/DiffBGIGG20.png
-  #             graph/DFEDiffBG.png
-
-Plot5_NW.R: Plot the maximum and minimum epistasis, and also give some stats about the frequency of such phenomenon
-  #Input file:  analysis/EpiDiffBGI*
-  #Output file: graph/ContextEpi*.png
-
-Plot6_NW.R: Plot the correlation result from fitness decomposition (Lei Dai result)
-  #Input file:  analysis/FitnessDecompose
-  #Output file: graph/FitnessDecompHist.png
-  #             graph/FitnessDecomp.png
-
-Plot7_NW.R: Plot the results from pathway analysis, e.g. number of stucking pathways, number of permissive pathways
-  #Input file:  analysis/ShortPaths4mutsCutoff10fold
-  #             analysis/ShortPaths4mutsCutoff1fold
-  #Output file: graph/PathwayDistribute.png
-  #             graph/PathwayDistribute_stuck.png
-  #             graph/PathwayDistribute_mono.png
-
-Plot8.R: Unfinished
-
-Plot9.R: Unfinished
-
-Plot10.R: 1. Plot the relationship between basin size and fitness of the local maximums.
-          2. Plot the number of step to local maximums from each variant
-  #Input file: analysis/LocalMaxCompile_*
-  #            analysis/LocalMaxClimb_*
-  #Output file: graph/LocalMaxBasinvsFit_*.png
-  #             graph/LocalMaxPathtoMax_greedy.png
-
-Plot11.R: Plot reproducibility, entropy, evolutionary potential
-  #Input file: analysis/LocalMaxPathLen
-  #            analysis/LocalMaxMuts
-  #             analysis/LocalMaxDes_random
-  #Output file: graph/LocalMax15accessbox.png
-  #             graph/LocalMax15accesshist.png
-  #             graph/LocalMaxDesReprodAll_*.png
-  #             graph/LocalMaxPathReprodAll_*.png
-  #             graph/LocalMaxDesReprodBenMut_*.png
-  #             graph/LocalMaxPathReprodBenMut_*.png
-  #             graph/LocalMaxDes_lowpeak.png
-
-Plot12.R: Plot the fraction of reachable beneficial variants. 
-  #Input file: analysis/LocalMaxEvolveAll
-  #            analysis/LocalMaxEvolveAll_pair
-  #Output file: graph/LocalMaxEvolvePot
-
-Plot13.R: Plot entropy along mutational trajectories
-  #Input file: analysis/RepTraj_weight
-  #Output file: graph/TrackingEn_weight.png
-
-Plot14.R: Plot the heatmap for epistasis of a given substitution pair under different genetic backgrounds
-
-ManFiguring.R: Plotting figures for manuscript
-
-Heatmapping1.py: Format the data into a heatmap format, for EpiRange and EpiSD
-  #Inputfile:  analysis/EpiDiffBGI20fit
-  #Outputfile: analysis/HeatMapEpiRange
-  #            analysis/HeatMapEpiSD
-
-Heatmapping2.py: Format the data into a heatmap format, for a given mutation pair under all possible genetic backgrounds
-  #Inputfile:  result/Mutfit
-  #Outputfile: analysis/Heatmap_*
-
-Heatmapping3.py: Clustering mutant (Unused)
-  #Input file: analysis/LocalMaxDes_*
-  #Outputfile: analysis/LocalMaxDesCluster_*
-
-############################################ANALYSIS SCRIPTS####################################################
-Analysis1a_NW.py: Compute episasis for all partition combinations for HD = 4
-  #Input file:  result/Mutfit
-  #Output file: result/HD4EpiIGG*
+#ANALYSIS
+* Analysis1a\_NW.py: Compute episasis for all partition combinations for HD = 4
+  * Input file:  result/Mutfit
+  * Output file: result/HD4EpiIGG\*
 
 Analysis1b_NW.py: Compute episasis for using S1*S2*S3*S4 for all mutations, THIS SCRIPT HAS A GOOD EPISTASIS CALCULATION
   #Input file:  result/Mutfit
@@ -201,9 +111,9 @@ Analysis21_NW.py: Compute the fitness difference between neighboring variants
   #Output file: analysis/FitStepDist
 
 Analysis22.py: Compile the endpoint reproducibility for each variant
-  #Input file: simulations/*/LocalMaxClimb_*
-  #            analysis/LocalMaxDes_*
-  #Output file: analysis/RepTraj_*
+  #Input file: simulations/\*/LocalMaxClimb_\*
+  #            analysis/LocalMaxDes_\*
+  #Output file: analysis/RepTraj_\*
 
 Analysis23.py: Count accessible peaks for a given node and count how many nodes can reach a given peak
   #Input file:  analysis/LocalMaxPathLen
@@ -216,20 +126,110 @@ Analysis24.py: Customize search for epistasis pair of interest
 EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial mutations from WT
   #Output file: ../Doc/EvolvePotFromWT.ods
 
-#################FITNESS DECOMPOSITION###################
-scripts in FitDecomposition are written by Lei Dai. They are for fitness decomposition analysis using fourier transform. 
+#FITNESS DECOMPOSITION
+scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomposition analysis using fourier transform. 
 
-FitDecomp1.py: Compute fitness information for each subgraphs
-  #Input file:  analysis/FitnessDecompose
-  #Output file: analysis/FitnessDecomposeFit
+* FitDecomp1.py: Compute fitness information for each subgraphs
+  * Input file:  analysis/FitnessDecompose
+  * Output file: analysis/FitnessDecomposeFit
 
-#################PATHWAY SIMULATIONS#####################
+#PARSING ADAPTIVE PATHWAY SIMULATIONS
+* CompileProbDest.py: Compile simulation results in to a file, count the evolution endpoint, pathway reproducibility and diversity
+  * Input file:
+    * result/Mutfit
+    * result/regression_missing
+    * simulations/\*/LocalMaxClimb\_\*
+  * Output file: analysis/LocalMaxDes\_weight
 
-CompileProbDest.py: Compile simulation results in to a file, count the evolution endpoint, pathway reproducibility and diversity
+#PLOTTING SCRIPTS
+Plot1_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
   #Input file:  result/Mutfit
-  #             result/regression_missing
-  #             simulations/*/LocalMaxClimb_*
-  #Output file: analysis/LocalMaxDes_weight
+  #Output file: graph/G4Cor_*.png
+
+Plot2a_NW.R: Plot DFE as boxplot and hist for different IGG conditions and different HD groups 
+  #Input file:  result/Mutfit
+  #Output file: graph/DFEboxIGG*.png
+  #             graph/DFEhistIGG*.png
+
+Plot2b_NW.R: Plot Distribution of Epistasis, fitness and expected fitness as histogram for different IGG conditions and different HD groups 
+  #Input file:  result/AllEpi
+  #Output file: graph/DEEIGG*.png
+  #             graph/DEEhistIGG*.png
+  #             graph/ExpfitboxIGG*.png 
+
+Plot3_NW.R: Plot the maximum predicted fitness across predictions from different types of partition vs actual fitness for HD = 4.
+  #Input file:  result/HD4EpiIGG20
+
+Plot4_NW.R: Plot the maximum and minimum fitness across different genetic backgrounds for individual single substituition
+  #Input file:  analysis/MutDiffBGI20fit
+  #             analysis/FitDiffBG
+  #Output file: graph/DiffBGIGG20.png
+  #             graph/DFEDiffBG.png
+
+Plot5_NW.R: Plot the maximum and minimum epistasis, and also give some stats about the frequency of such phenomenon
+  #Input file:  analysis/EpiDiffBGI*
+  #Output file: graph/ContextEpi*.png
+
+Plot6_NW.R: Plot the correlation result from fitness decomposition (Lei Dai result)
+  #Input file:  analysis/FitnessDecompose
+  #Output file: graph/FitnessDecompHist.png
+  #             graph/FitnessDecomp.png
+
+Plot7_NW.R: Plot the results from pathway analysis, e.g. number of stucking pathways, number of permissive pathways
+  #Input file:  analysis/ShortPaths4mutsCutoff10fold
+  #             analysis/ShortPaths4mutsCutoff1fold
+  #Output file: graph/PathwayDistribute.png
+  #             graph/PathwayDistribute_stuck.png
+  #             graph/PathwayDistribute_mono.png
+
+Plot8.R: Unfinished
+
+Plot9.R: Unfinished
+
+Plot10.R: 1. Plot the relationship between basin size and fitness of the local maximums.
+          2. Plot the number of step to local maximums from each variant
+  #Input file: analysis/LocalMaxCompile_*
+  #            analysis/LocalMaxClimb_*
+  #Output file: graph/LocalMaxBasinvsFit_*.png
+  #             graph/LocalMaxPathtoMax_greedy.png
+
+Plot11.R: Plot reproducibility, entropy, evolutionary potential
+  #Input file: analysis/LocalMaxPathLen
+  #            analysis/LocalMaxMuts
+  #             analysis/LocalMaxDes_random
+  #Output file: graph/LocalMax15accessbox.png
+  #             graph/LocalMax15accesshist.png
+  #             graph/LocalMaxDesReprodAll_*.png
+  #             graph/LocalMaxPathReprodAll_*.png
+  #             graph/LocalMaxDesReprodBenMut_*.png
+  #             graph/LocalMaxPathReprodBenMut_*.png
+  #             graph/LocalMaxDes_lowpeak.png
+
+Plot12.R: Plot the fraction of reachable beneficial variants. 
+  #Input file: analysis/LocalMaxEvolveAll
+  #            analysis/LocalMaxEvolveAll_pair
+  #Output file: graph/LocalMaxEvolvePot
+
+Plot13.R: Plot entropy along mutational trajectories
+  #Input file: analysis/RepTraj_weight
+  #Output file: graph/TrackingEn_weight.png
+
+Plot14.R: Plot the heatmap for epistasis of a given substitution pair under different genetic backgrounds
+
+ManFiguring.R: Plotting figures for manuscript
+
+Heatmapping1.py: Format the data into a heatmap format, for EpiRange and EpiSD
+  #Inputfile:  analysis/EpiDiffBGI20fit
+  #Outputfile: analysis/HeatMapEpiRange
+  #            analysis/HeatMapEpiSD
+
+Heatmapping2.py: Format the data into a heatmap format, for a given mutation pair under all possible genetic backgrounds
+  #Inputfile:  result/Mutfit
+  #Outputfile: analysis/Heatmap_*
+
+Heatmapping3.py: Clustering mutant (Unused)
+  #Input file: analysis/LocalMaxDes_*
+  #Outputfile: analysis/LocalMaxDesCluster_*
 
 #MISC SCRIPTING
 * BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
