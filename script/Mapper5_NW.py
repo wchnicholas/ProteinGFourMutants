@@ -118,8 +118,8 @@ def main():
   outfile = 'result/Mutfit'
   AOhash  = {}
   print 'Starting Hashing Anders Data'
-  AOhash  = hashin('/Users/wchnicholas/RSun/Robust/Doc/SMutList', AOhash)
-  AOhash  = hashin('/Users/wchnicholas/RSun/Robust/Doc/DMutList', AOhash)
+  AOhash  = hashin('doc/SMutList', AOhash)
+  AOhash  = hashin('doc/DMutList', AOhash)
   print 'Starting Compiling data'
   fitting(Mutfile, WTIpt, WTI10, WTI20, WTI90, outfile, AOhash, Bmax10, Bmax20, Bmax90, BmaxAO)
 

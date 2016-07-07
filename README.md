@@ -8,7 +8,8 @@
   * IGG10: low concentration of IgG is used as target (unpublished results)
   * IGG20: medium concentration of IgG is used as target
   * IGG90: high concentration of IgG is used as target (unpublished results)
-Fasta/SeqInfo.fa: reference sequence information
+* Fasta/SeqInfo.fa: reference sequence information
+* result/regression\_missing: inferred fitness for missing variants in log scale
 
 #MAPPING PIPELINE
 * Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing. Files for forward reads must contain '\_R1\_'. Files for reverse reads must contain '\_R2\_'.
@@ -28,27 +29,27 @@ Fasta/SeqInfo.fa: reference sequence information
     * paired/IGG20 
     * paired/IGG90 
   * Output file: 
-    * pep/Input 
-    * pep/IGG10 
-    * pep/IGG20 
-    * pep/IGG90 
+    * pep/Input.pep
+    * pep/IGG10.pep
+    * pep/IGG20.pep
+    * pep/IGG90.pep
 * Mapper3\_NW.sh: Counting the number for each unique protein sequence
   * Input file: 
-    * pep/Input 
-    * pep/IGG10 
-    * pep/IGG20 
-    * pep/IGG90 
+    * pep/Input.pep
+    * pep/IGG10.pep
+    * pep/IGG20.pep
+    * pep/IGG90.pep
   * Output file: 
-    * count/Input 
-    * count/IGG10 
-    * count/IGG20 
-    * count/IGG90 
+    * count/Input.count
+    * count/IGG10.count
+    * count/IGG20.count
+    * count/IGG90.count
 * Mapper4\_NW.py: Combine count information from different samples into one file, also compute hamming distance
   * Input file: 
-    * count/Input 
-    * count/IGG10 
-    * count/IGG20 
-    * count/IGG90 
+    * count/Input.count
+    * count/IGG10.count
+    * count/IGG20.count
+    * count/IGG90.count
   * Output file: 
     * result/WTcount
     * result/Mutcount
@@ -60,11 +61,11 @@ Fasta/SeqInfo.fa: reference sequence information
     * result/Mutfit
 
 #ANALYSIS
-* Analysis1a\_NW.py: Compute episasis for all partition combinations for HD = 4
+* Analysis1a\_NW.py: Compute episasis for all partition combinations for HD = 4 (Unused)
   * Input file:  result/Mutfit
   * Output file: result/HD4EpiIGG\*
 
-* Analysis1b\_NW.py: Compute episasis for using S1\*S2\*S3\*S4 for all mutations, THIS SCRIPT HAS A GOOD EPISTASIS CALCULATION
+* Analysis1b\_NW.py: Compute episasis for using S1\*S2\*S3\*S4 for all mutations. (Unused)
   * Input file:  result/Mutfit
   * Output file: result/AllEpi
 
@@ -109,9 +110,9 @@ Fasta/SeqInfo.fa: reference sequence information
 * Analysis11\_NW.py: Global graph analysis, global max search, pathway to max search
   * Input file:  result/Mutfit
   * Output file:
-    * analysis/LocalMaxMuts
-    * analysis/LocalMaxClimb
-    * analysis/LocalMaxCompile
+    * analysis/LocalMaxMuts\*
+    * analysis/LocalMaxClimb\*
+    * analysis/LocalMaxCompile\*
 
 * Analysis11sim\_NW.py: A high-throughput computing version of Analysis11\_NW.py
 
@@ -139,8 +140,8 @@ Fasta/SeqInfo.fa: reference sequence information
 * Analysis14\_NW.py: Compute the path length information (i.e. avg, min, max) from the simulation output
   * Input file:
     * simulations/\*/LocalMaxClimb\*
-    * analysis/LocalMaxDes\_weight\_pair
-  * Output file:  analysis/LocalMaxDist\_weight\_pair
+    * analysis/LocalMaxDes\_weight\_\*
+  * Output file:  analysis/LocalMaxDist\_weight\_\*
 
 * Analysis15\*\_NW.py: Caculate the evolution potential of each variant (how many variants it can reach by upward path)
   * Input file:
@@ -151,7 +152,7 @@ Fasta/SeqInfo.fa: reference sequence information
     * analysis/LocalMaxEvolvePotR\*      (Analysis15R\_NW.py)
     * analysis/LocalMaxEvolvePotWT      (Analysis15WT\_NW.py)
 
-* Analysis16\_NW.py: Compute the neighbor correlation of the entire landscape
+* Analysis16\_NW.py: Compute the neighbor correlation of the entire landscape (Unused)
 
 * Analysis17.py: Search for rerouting paths
 
@@ -200,7 +201,7 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
 * CompileProbDest.py: Compile simulation results in to a file, count the evolution endpoint, pathway reproducibility and diversity
   * Input file:
     * result/Mutfit
-    * result/regression_missing
+    * result/regression\_missing
     * simulations/\*/LocalMaxClimb\_\*
   * Output file: analysis/LocalMaxDes\_weight
 
@@ -278,7 +279,7 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
     * graph/LocalMaxPathReprodBenMut\_\*.png
     * graph/LocalMaxDes\_lowpeak.png
 
-* Plot12.R: Plot the fraction of reachable beneficial variants. 
+* Plot12.R: Plot the fraction of reachable beneficial variants. (Unused)
   * Input file:
     * analysis/LocalMaxEvolveAll
     * analysis/LocalMaxEvolveAll\_pair
