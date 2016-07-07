@@ -181,7 +181,6 @@
 
 * Analysis23.py: Count accessible peaks for a given node and count how many nodes can reach a given peak
   * Input file:  analysis/LocalMaxPathLen
-  * Output file: Doc/NodesAccessPeaks.ods
 
 * Analysis24.py: Customize search for epistasis pair of interest
   * Input file: result/Mutfit 
@@ -202,7 +201,7 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
     * result/Mutfit
     * result/regression\_missing
     * simulations/\*/LocalMaxClimb\_\*
-  * Output file: analysis/LocalMaxDes\_weight
+  * Output file: analysis/LocalMaxDes\_\*
 
 #PLOTTING SCRIPTS
 * Plot1\_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
