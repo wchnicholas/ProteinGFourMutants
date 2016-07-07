@@ -1,0 +1,39 @@
+strict graph{
+	layout=fdp
+	node [shape=circle]
+	FYGN [fillcolor="0.666666666667,0.642125075947,1", color=black, style="filled,rounded", fixedsize=shape, width=0.50982816];
+	FWGS [fillcolor="0.666666666667,0.625756201143,1", color=black, style="filled,rounded", fixedsize=shape, width=0.21069608];
+	IYGC [fillcolor="0.666666666667,0.497964247029,1", color=black, style="filled,rounded", fixedsize=shape, width=0.27110272];
+	FWLG [fillcolor="0.666666666667,0.901808056689,1", color=black, style="filled,rounded", fixedsize=shape, width=3.5030516];
+	VAAA [fillcolor="0.666666666667,0.743019350014,1", color=black, style="filled,rounded", fixedsize=shape, width=0.50505432];
+	TYGM [fillcolor="0.666666666667,0.606103178641,1", color=black, style="filled,rounded", fixedsize=shape, width=0.59847768];
+	LYGV [fillcolor="0.666666666667,0.582185633913,1", color=black, style="filled,rounded", fixedsize=shape, width=0.57127];
+	IWGF [fillcolor="0.666666666667,0.681718887049,1", color=black, style="filled,rounded", fixedsize=shape, width=1.70256184];
+	ANCA [fillcolor="0.666666666667,0.936695584051,1", color=black, style="filled,rounded", fixedsize=shape, width=0.51138672];
+	THCA [fillcolor="0.666666666667,0.604812362309,1", color=black, style="filled,rounded", fixedsize=shape, width=0.05838536];
+	WYGW [fillcolor="0.666666666667,0.350919034084,1", color=black, style="filled,rounded", fixedsize=shape, width=0.03791048];
+	ANLG [fillcolor="0.666666666667,0.655900004307,1", color=black, style="filled,rounded", fixedsize=shape, width=0.13115448];
+	IGQV [fillcolor="0.666666666667,0.0647817471514,1", color=black, style="filled,rounded", fixedsize=shape, width=0.0493492];
+	FWAA [fillcolor="0.666666666667,1,1", color=black, style="filled,rounded", fixedsize=shape, width=3.51136384];
+	WNWY [fillcolor="0.666666666667,0.130573612586,1", color=black, style="filled,rounded", fixedsize=shape, width=0.06627376];
+	FWGS--FYGN [style=bold, color=black];
+	IYGC--FYGN [style=bold, color=black];
+	FWLG--FWGS [style=bold, color=black];
+	TYGM--FYGN [style=bold, color=black];
+	TYGM--IYGC [style=bold, color=black];
+	LYGV--FYGN [style=bold, color=black];
+	LYGV--IYGC [style=bold, color=black];
+	LYGV--TYGM [style=bold, color=black];
+	IWGF--FWGS [style=bold, color=black];
+	IWGF--IYGC [style=bold, color=black];
+	THCA--ANCA [style=bold, color=black];
+	WYGW--FYGN [style=bold, color=black];
+	WYGW--IYGC [style=bold, color=black];
+	WYGW--TYGM [style=bold, color=black];
+	WYGW--LYGV [style=bold, color=black];
+	ANLG--FWLG [style=bold, color=black];
+	ANLG--ANCA [style=bold, color=black];
+	FWAA--FWGS [style=bold, color=black];
+	FWAA--FWLG [style=bold, color=black];
+	FWAA--VAAA [style=bold, color=black];
+}

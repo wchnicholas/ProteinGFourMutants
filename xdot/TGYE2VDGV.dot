@@ -1,0 +1,52 @@
+strict digraph{
+	rankdir=LR
+	node [shape=box]
+	VDYE [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	TDYV [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	TGGE [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	TGYV [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	TDGE [fillcolor="0.166666666667,0.0587321431738,1", color=black, style="filled,rounded"];
+	VDGV [fillcolor="0.0,1.0,1", color=black, style="filled,rounded"];
+	VGYV [fillcolor="0.166666666667,0.0435052912398,1", color=black, style="filled,rounded"];
+	TGGV [fillcolor="0.166666666667,0.499799022302,1", color=black, style="filled,rounded"];
+	TDYE [fillcolor="0.166666666667,0.0548166669622,1", color=black, style="filled,rounded"];
+	VGYE [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	TGYE [fillcolor="0.166666666667,0.0548166669622,1", color=black, style="filled,rounded"];
+	VGGE [fillcolor="0.166666666667,0.00522063494878,1", color=black, style="filled,rounded"];
+	TDGV [fillcolor="0.166666666667,0.49310340291,1", color=black, style="filled,rounded"];
+	VGGV [fillcolor="0.045324717313,1,1", color=black, style="filled,rounded"];
+	VDGE [fillcolor="0.166666666667,0.0706142610532,1", color=black, style="filled,rounded"];
+	VDYV [fillcolor="0.166666666667,0.0274289481318,1", color=black, style="filled,rounded"];
+	VDYE->VDYV [style=bold, color=black, dir=forward];
+	TDYE->VDYE [style=bold, color=black, dir=back];
+	VGYE->VDYE [style=bold, color=black, dir=none];
+	VDYE->VDGE [style=bold, color=black, dir=forward];
+	TGYV->TDYV [style=bold, color=black, dir=none];
+	TDYV->VDYV [style=bold, color=black, dir=forward];
+	TDYE->TDYV [style=bold, color=black, dir=back];
+	TDYV->TDGV [style=bold, color=black, dir=forward];
+	TGGE->TGGV [style=bold, color=black, dir=forward];
+	TGGE->VGGE [style=bold, color=black, dir=forward];
+	TGGE->TDGE [style=bold, color=black, dir=forward];
+	TGYE->TGGE [style=bold, color=black, dir=back];
+	TGYV->VGYV [style=bold, color=black, dir=forward];
+	TGYV->TGGV [style=bold, color=black, dir=forward];
+	TGYE->TGYV [style=bold, color=black, dir=back];
+	TDYE->TDGE [style=bold, color=black, dir=forward];
+	TDGE->VDGE [style=bold, color=black, dir=forward];
+	TDGE->TDGV [style=bold, color=black, dir=forward];
+	VGGV->VDGV [style=bold, color=black, dir=forward];
+	VDYV->VDGV [style=bold, color=black, dir=forward];
+	VDGE->VDGV [style=bold, color=black, dir=forward];
+	TDGV->VDGV [style=bold, color=black, dir=forward];
+	VGYV->VDYV [style=bold, color=black, dir=back];
+	VGYE->VGYV [style=bold, color=black, dir=forward];
+	VGYV->VGGV [style=bold, color=black, dir=forward];
+	TGGV->VGGV [style=bold, color=black, dir=forward];
+	TGGV->TDGV [style=bold, color=black, dir=back];
+	TGYE->TDYE [style=bold, color=black, dir=none];
+	TGYE->VGYE [style=bold, color=black, dir=back];
+	VGYE->VGGE [style=bold, color=black, dir=forward];
+	VGGE->VGGV [style=bold, color=black, dir=forward];
+	VGGE->VDGE [style=bold, color=black, dir=forward];
+}

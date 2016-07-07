@@ -1,0 +1,52 @@
+strict digraph{
+	rankdir=LR
+	node [shape=box]
+	YGGM [fillcolor="0.166666666667,0.564805792814,1", color=black, style="filled,rounded"];
+	VDCV [fillcolor="0.166666666667,0.121425239001,1", color=black, style="filled,rounded"];
+	YDCM [fillcolor="0.166666666667,0.61536129364,1", color=black, style="filled,rounded"];
+	VGCV [fillcolor="0.166666666667,0.40974074295,1", color=black, style="filled,rounded"];
+	YGCV [fillcolor="0.166666666667,0.119226250643,1", color=black, style="filled,rounded"];
+	VGGV [fillcolor="0.045324717313,1,1", color=black, style="filled,rounded"];
+	YDGV [fillcolor="0.166666666667,0.14404502638,1", color=black, style="filled,rounded"];
+	VGCM [fillcolor="0.166666666667,0.0206855347028,1", color=black, style="filled,rounded"];
+	VDGV [fillcolor="0.0,1.0,1", color=black, style="filled,rounded"];
+	VGGM [fillcolor="0.103517753629,1,1", color=black, style="filled,rounded"];
+	VDGM [fillcolor="0.138117048758,1,1", color=black, style="filled,rounded"];
+	YDGM [fillcolor="0.166666666667,0.882380531968,1", color=black, style="filled,rounded"];
+	YDCV [fillcolor="0.166666666667,0.450666669096,1", color=black, style="filled,rounded"];
+	VDCM [fillcolor="0.166666666667,0.21083333447,1", color=black, style="filled,rounded"];
+	YGGV [fillcolor="0.166666666667,0.153370550989,1", color=black, style="filled,rounded"];
+	YGCM [fillcolor="0.166666666667,0.0351654089946,1", color=black, style="filled,rounded"];
+	YGGM->VGGM [style=bold, color=black, dir=forward];
+	YGGM->YGGV [style=bold, color=black, dir=back];
+	YGCM->YGGM [style=bold, color=black, dir=forward];
+	YGGM->YDGM [style=bold, color=black, dir=forward];
+	YDCV->VDCV [style=bold, color=black, dir=back];
+	VDCM->VDCV [style=bold, color=black, dir=back];
+	VDCV->VDGV [style=bold, color=black, dir=forward];
+	VGCV->VDCV [style=bold, color=black, dir=back];
+	YDCM->YDCV [style=bold, color=black, dir=back];
+	YDCM->VDCM [style=bold, color=black, dir=back];
+	YGCM->YDCM [style=bold, color=black, dir=forward];
+	YDCM->YDGM [style=bold, color=black, dir=forward];
+	VGCV->VGGV [style=bold, color=black, dir=forward];
+	VGCM->VGCV [style=bold, color=black, dir=forward];
+	YGCV->VGCV [style=bold, color=black, dir=forward];
+	YGCV->YDCV [style=bold, color=black, dir=forward];
+	YGCV->YGGV [style=bold, color=black, dir=forward];
+	YGCM->YGCV [style=bold, color=black, dir=forward];
+	VGGM->VGGV [style=bold, color=black, dir=forward];
+	YGGV->VGGV [style=bold, color=black, dir=forward];
+	VGGV->VDGV [style=bold, color=black, dir=forward];
+	YDCV->YDGV [style=bold, color=black, dir=back];
+	YGGV->YDGV [style=bold, color=black, dir=back];
+	YDGV->VDGV [style=bold, color=black, dir=forward];
+	YDGM->YDGV [style=bold, color=black, dir=back];
+	VGCM->VGGM [style=bold, color=black, dir=forward];
+	VGCM->VDCM [style=bold, color=black, dir=forward];
+	YGCM->VGCM [style=bold, color=black, dir=back];
+	VDGM->VDGV [style=bold, color=black, dir=forward];
+	VGGM->VDGM [style=bold, color=black, dir=back];
+	VDCM->VDGM [style=bold, color=black, dir=forward];
+	YDGM->VDGM [style=bold, color=black, dir=forward];
+}

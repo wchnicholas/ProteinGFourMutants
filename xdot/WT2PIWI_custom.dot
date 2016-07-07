@@ -1,0 +1,24 @@
+strict digraph{
+	rankdir=LR
+	node [shape=box]
+	PIWI [fillcolor="0.166666666667,0.00241616162919,1", color=black, style="filled,rounded"];
+	FIWI [fillcolor="0.166666666667,0.00609074077357,1", color=black, style="filled,rounded"];
+	FIWV [fillcolor="0.166666666667,0.118546613105,1", color=black, style="filled,rounded"];
+	WWFV [fillcolor="0.0544468224342,1,1", color=black, style="filled,rounded"];
+	FWLG [fillcolor="0.00832638236356,1,1", color=black, style="filled,rounded"];
+	WWLG [fillcolor="0.0276467092182,1,1", color=black, style="filled,rounded"];
+	WWFG [fillcolor="0.0514001120453,1,1", color=black, style="filled,rounded"];
+	WIFV [fillcolor="0.114351325408,1,1", color=black, style="filled,rounded"];
+	FIFV [fillcolor="0.166666666667,0.744861768723,1", color=black, style="filled,rounded"];
+	FIWV->FIWI [style=bold, color=black, dir=back];
+	FIFV->FIWV [style=bold, color=black, dir=back];
+	WWFV->WWFG [style=bold, color=black];
+	WIFV->WWFV [style=bold, color=black];
+	WWLG->FWLG [style=bold, color=black];
+	WWFG->WWLG [style=bold, color=black];
+	WIFV->FIFV [style=bold, color=black, dir=back];
+	PIWI->FIWI [style=bold, color=black];
+	WWFV->FIFV [style=bold, color=transparent];
+	{rank=same; PIWI WIFV}
+	{rank=same; FIWI FIWV FIFV WWFV}
+}

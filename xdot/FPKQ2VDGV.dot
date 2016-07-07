@@ -1,0 +1,52 @@
+strict digraph{
+	rankdir=LR
+	node [shape=box]
+	VPGV [fillcolor="0.166666666667,0.804331958688,1", color=black, style="filled,rounded"];
+	VPKQ [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	VPKV [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	VPGQ [fillcolor="0.166666666667,0.0200994445528,1", color=black, style="filled,rounded"];
+	FDKV [fillcolor="0.166666666667,0.0203024692452,1", color=black, style="filled,rounded"];
+	VDGQ [fillcolor="0.166666666667,0.248603247522,1", color=black, style="filled,rounded"];
+	VDGV [fillcolor="0.0,1.0,1", color=black, style="filled,rounded"];
+	FDKQ [fillcolor="0.166666666667,0.042166666894,1", color=black, style="filled,rounded"];
+	FPGV [fillcolor="0.166666666667,0.326811747794,1", color=black, style="filled,rounded"];
+	FPKQ [fillcolor="0.166666666667,0.00711904765744,1", color=black, style="filled,rounded"];
+	FPKV [fillcolor="0.166666666667,0.0117885305295,1", color=black, style="filled,rounded"];
+	FPGQ [fillcolor="0.166666666667,0.00445663959042,1", color=black, style="filled,rounded"];
+	VDKV [fillcolor="0.166666666667,0.00815077425368,1", color=black, style="filled,rounded"];
+	FDGQ [fillcolor="0.0,0.0,1", color=black, style="filled,rounded"];
+	FDGV [fillcolor="0.166666666667,0.75420145685,1", color=black, style="filled,rounded"];
+	VDKQ [fillcolor="0.166666666667,0.042166666894,1", color=black, style="filled,rounded"];
+	FPGV->VPGV [style=bold, color=black, dir=forward];
+	VPKV->VPGV [style=bold, color=black, dir=forward];
+	VPGQ->VPGV [style=bold, color=black, dir=forward];
+	VPGV->VDGV [style=bold, color=black, dir=forward];
+	FPKQ->VPKQ [style=bold, color=black, dir=back];
+	VPKQ->VDKQ [style=bold, color=black, dir=forward];
+	VPKQ->VPKV [style=bold, color=black, dir=none];
+	VPKQ->VPGQ [style=bold, color=black, dir=forward];
+	FPKV->VPKV [style=bold, color=black, dir=back];
+	VPKV->VDKV [style=bold, color=black, dir=forward];
+	VPGQ->VDGQ [style=bold, color=black, dir=forward];
+	FPGQ->VPGQ [style=bold, color=black, dir=forward];
+	FDKV->VDKV [style=bold, color=black, dir=back];
+	FPKV->FDKV [style=bold, color=black, dir=forward];
+	FDKQ->FDKV [style=bold, color=black, dir=back];
+	FDKV->FDGV [style=bold, color=black, dir=forward];
+	FDGQ->VDGQ [style=bold, color=black, dir=forward];
+	VDKQ->VDGQ [style=bold, color=black, dir=forward];
+	VDGQ->VDGV [style=bold, color=black, dir=forward];
+	FDGV->VDGV [style=bold, color=black, dir=forward];
+	VDKV->VDGV [style=bold, color=black, dir=forward];
+	FPKQ->FDKQ [style=bold, color=black, dir=forward];
+	FDKQ->FDGQ [style=bold, color=black, dir=back];
+	FDKQ->VDKQ [style=bold, color=black, dir=none];
+	FPKV->FPGV [style=bold, color=black, dir=forward];
+	FPGQ->FPGV [style=bold, color=black, dir=forward];
+	FPGV->FDGV [style=bold, color=black, dir=forward];
+	FPKQ->FPGQ [style=bold, color=black, dir=back];
+	FPKQ->FPKV [style=bold, color=black, dir=forward];
+	FPGQ->FDGQ [style=bold, color=black, dir=back];
+	VDKQ->VDKV [style=bold, color=black, dir=back];
+	FDGQ->FDGV [style=bold, color=black, dir=forward];
+}

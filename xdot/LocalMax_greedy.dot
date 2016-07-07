@@ -1,0 +1,38 @@
+strict graph{
+	graph [ dpi = 30 ]
+	layout=fdp
+	node [shape=circle,label=""]
+	IYGC [fillcolor="0.166666666667,0.8714374323,1", color=black, style="filled,rounded", fixedsize=shape, width=0.35728];
+	FWLG [fillcolor="0.0703059834658,1,1", color=black, style="filled,rounded", fixedsize=shape, width=2.68808];
+	ANLG [fillcolor="0.14202916541,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.19936];
+	VAAA [fillcolor="0.116619356246,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.47504];
+	WYGW [fillcolor="0.166666666667,0.614108309647,1", color=black, style="filled,rounded", fixedsize=shape, width=0.05096];
+	FYGN [fillcolor="0.146046852849,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.6624];
+	LYGV [fillcolor="0.163529190109,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.41264];
+	FWGS [fillcolor="0.150821108,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.25504];
+	IGQV [fillcolor="0.166666666667,0.113368057515,1", color=black, style="filled,rounded", fixedsize=shape, width=0.03272];
+	AHCA [fillcolor="0.0,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.47624];
+	IWGF [fillcolor="0.134498657944,1,1", color=black, style="filled,rounded", fixedsize=shape, width=1.6028];
+	FWAA [fillcolor="0.00991809767875,1,1", color=black, style="filled,rounded", fixedsize=shape, width=2.15784];
+	TYGM [fillcolor="0.156553239563,1,1", color=black, style="filled,rounded", fixedsize=shape, width=0.48656];
+	PQKD [fillcolor="0.166666666667,0.674139269228,1", color=black, style="filled,rounded", fixedsize=shape, width=2.78344];
+	WNWY [fillcolor="0.166666666667,0.228503822025,1", color=black, style="filled,rounded", fixedsize=shape, width=0.0628];
+	ANLG--FWLG [style=bold, color=black];
+	WYGW--IYGC [style=bold, color=black];
+	FYGN--IYGC [style=bold, color=black];
+	FYGN--WYGW [style=bold, color=black];
+	LYGV--IYGC [style=bold, color=black];
+	LYGV--WYGW [style=bold, color=black];
+	LYGV--FYGN [style=bold, color=black];
+	FWGS--FWLG [style=bold, color=black];
+	FWGS--FYGN [style=bold, color=black];
+	IWGF--IYGC [style=bold, color=black];
+	IWGF--FWGS [style=bold, color=black];
+	FWAA--FWLG [style=bold, color=black];
+	FWAA--VAAA [style=bold, color=black];
+	FWAA--FWGS [style=bold, color=black];
+	TYGM--IYGC [style=bold, color=black];
+	TYGM--WYGW [style=bold, color=black];
+	TYGM--FYGN [style=bold, color=black];
+	TYGM--LYGV [style=bold, color=black];
+}

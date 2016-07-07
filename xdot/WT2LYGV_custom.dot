@@ -1,0 +1,16 @@
+strict digraph{
+	rankdir=LR
+	node [shape=box]
+	VRGC [fillcolor="0.166666666667,0.907755109696,1", color=black, style="filled,rounded"];
+	VYGC [fillcolor="0.0649037354733,1,1", color=black, style="filled,rounded"];
+	VRGV [fillcolor="0.166666666667,0.658188659576,1", color=black, style="filled,rounded"];
+	VDGV [fillcolor="0.166666666667,0.4,1", color=black, style="filled,rounded"];
+	LYGC [fillcolor="0.04429043809,1,1", color=black, style="filled,rounded"];
+	LYGV [fillcolor="0.0,1,1", color=black, style="filled,rounded"];
+	VRGC->VYGC [style=bold, color=black];
+	VRGC->VRGV [style=bold, color=black, dir=back];
+	VYGC->LYGC [style=bold, color=black];
+	VDGV->VRGV [style=bold, color=black];
+	LYGC->LYGV [style=bold, color=black];
+        {rank=same; VDGV VRGV}
+}
