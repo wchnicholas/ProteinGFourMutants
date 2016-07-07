@@ -1,3 +1,15 @@
+#FILES
+doc/Epistasis: Epistasis value from Olson et al. 2014 (http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
+doc/SMutList:  Single mutant read count from Olson et al. 2014
+doc/DMutList:  Double mutant read count from Olson et al. 2014
+doc/AAmass: Mass and volume for each amino acid
+Fasta/Barcode.fa: Barcodes used for sequencing.
+  * Input: cDNA input library
+  * IGG10: low concentration of IgG is used as target (unpublished results)
+  * IGG20: medium concentration of IgG is used as target
+  * IGG90: high concentration of IgG is used as target (unpublished results)
+Fasta/SeqInfo.fa: reference sequence information
+
 #MAPPING PIPELINE
 * Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing. Files for forward reads must contain '\_R1\_'. Files for reverse reads must contain '\_R2\_'.
   * Input file: 
@@ -310,5 +322,3 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
   * awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 3) print $1}' result/Mutfit > BenMutHD3
   * awk '{if ($11 > 1 && $11 != "NA" && $1 != "mut" && $2 <= 4) print $1}' result/Mutfit > BenMutHD4
 
-#FILES
-result/Epistasis: Epistasis value from Anders et al. 2014
