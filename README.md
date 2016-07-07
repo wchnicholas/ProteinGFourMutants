@@ -173,7 +173,7 @@
   *             result/regression\_missing
   * Output file: analysis/FitStepDist
 
-* Analysis22.py: Compile the endpoint reproducibility for each variant
+* Analysis22.py: Compile the endpoint reproducibility for each variant (Unused)
   * Input file:
     * simulations/\*/LocalMaxClimb\_\*
     * analysis/LocalMaxDes\_\*
@@ -188,7 +188,6 @@
   * Output file: analysis/AllPairwiseEpi
 
 * EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial mutations from WT
-  * Output file: ../Doc/EvolvePotFromWT.ods
 
 #FITNESS DECOMPOSITION
 scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomposition analysis using fourier transform. 
@@ -294,14 +293,14 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
 * ManFiguring.R: Plotting figures for manuscript
 
 * Heatmapping1.py: Format the data into a heatmap format, for EpiRange and EpiSD
-  * Inputfile:  analysis/EpiDiffBGI20fit
-  * Outputfile:
+  * Input file:  analysis/EpiDiffBGI20fit
+  * Output file:
     * analysis/HeatMapEpiRange
     * analysis/HeatMapEpiSD
 
 * Heatmapping2.py: Format the data into a heatmap format, for a given mutation pair under all possible genetic backgrounds
-  * Inputfile:  result/Mutfit
-  * Outputfile: analysis/Heatmap\_\*
+  * Input file:  result/Mutfit
+  * Output file: analysis/Heatmap\_\*
 
 * Heatmapping3.py: Clustering mutant (Unused)
   * Input file: analysis/LocalMaxDes\_\*
