@@ -1,9 +1,51 @@
 #MAPPING PIPELINE
-* Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing
+* Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing. Files for forward reads must contain '\_R1\_'. Files for reverse reads must contain '\_R2\_'.
+  * Input file: 
+    * fastq/\*.fastq
+    * Fasta/SeqInfo.fa
+    * Fasta/Barcode.fa
+  * Output file:
+    * paired/Input 
+    * paired/IGG10 
+    * paired/IGG20 
+    * paired/IGG90 
 * Mapper2\_NW.py: Translating nucleotide sequence to protein sequence
+  * Input file: 
+    * paired/Input 
+    * paired/IGG10 
+    * paired/IGG20 
+    * paired/IGG90 
+  * Output file: 
+    * pep/Input 
+    * pep/IGG10 
+    * pep/IGG20 
+    * pep/IGG90 
 * Mapper3\_NW.sh: Counting the number for each unique protein sequence
+  * Input file: 
+    * pep/Input 
+    * pep/IGG10 
+    * pep/IGG20 
+    * pep/IGG90 
+  * Output file: 
+    * count/Input 
+    * count/IGG10 
+    * count/IGG20 
+    * count/IGG90 
 * Mapper4\_NW.py: Combine count information from different samples into one file, also compute hamming distance
+  * Input file: 
+    * count/Input 
+    * count/IGG10 
+    * count/IGG20 
+    * count/IGG90 
+  * Output file: 
+    * result/WTcount
+    * result/Mutcount
 * Mapper5\_NW.py: Compute fitness information, and also add the column for Anders single/double mutant fitness data, and Kd calculation
+  * Input file: 
+    * result/WTcount
+    * result/Mutcount
+  * Output file: 
+    * result/Mutfit
 
 #ANALYSIS
 * Analysis1a\_NW.py: Compute episasis for all partition combinations for HD = 4
