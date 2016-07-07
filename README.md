@@ -143,7 +143,7 @@
     * analysis/LocalMaxDes\_weight\_\*
   * Output file:  analysis/LocalMaxDist\_weight\_\*
 
-* Analysis15\*\_NW.py: Caculate the evolution potential of each variant (how many variants it can reach by upward path)
+* Analysis15\*\_NW.py: Calculate the evolution potential of each variant (how many variants it can reach by upward path)
   * Input file:
     * result/Mutfit
     * result/regression_missing
@@ -151,6 +151,14 @@
     * analysis/LocalMaxEvolvePotSampled (Analysis15\_NW.py)
     * analysis/LocalMaxEvolvePotR\*      (Analysis15R\_NW.py)
     * analysis/LocalMaxEvolvePotWT      (Analysis15WT\_NW.py)
+
+* Analysis15WTnuc\_NW.py: Calculate the evolution potential of WT with the contraints from standard genetic code
+  * Input file: 
+    * result/Mutfit
+    * result/regression_missing
+  * Output file: 
+    * analysis/AAtransitionmatrix
+    * analysis/LocalMaxEvolvePotWTnuc
 
 * Analysis16\_NW.py: Compute the neighbor correlation of the entire landscape (Unused)
 
@@ -168,10 +176,10 @@
 
 * Analysis20\_NW.py: Bootstrapping the average hamming distances among randomly sampled variants
 
-* Analysis21\_NW.py: Compute the fitness difference between neighboring variants
-  * Input file:  result/Mutfit
-  *             result/regression\_missing
-  * Output file: analysis/FitStepDist
+* Analysis21\_NW.py: Compute the fitness difference between neighboring variants (Unused)
+  * Input file: 
+    * result/Mutfit
+    * result/regression\_missing
 
 * Analysis22.py: Compile the endpoint reproducibility for each variant (Unused)
   * Input file:
