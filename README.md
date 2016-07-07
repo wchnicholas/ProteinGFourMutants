@@ -1,7 +1,7 @@
 #FILES
-doc/Epistasis: Epistasis value from Olson et al. 2014 (http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
-doc/SMutList:  Single mutant read count from Olson et al. 2014
-doc/DMutList:  Double mutant read count from Olson et al. 2014
+doc/Epistasis: Epistasis value from [Olson et al. 2014](http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
+doc/SMutList:  Single mutant read count from [Olson et al. 2014](http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
+doc/DMutList:  Double mutant read count from [Olson et al. 2014](http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
 doc/AAmass: Mass and volume for each amino acid
 Fasta/Barcode.fa: Barcodes used for sequencing.
   * Input: cDNA input library
