@@ -10,6 +10,11 @@
   * IGG90: high concentration of IgG is used as target (unpublished results)
 * Fasta/SeqInfo.fa: reference sequence information
 * result/regression\_missing: inferred fitness for missing variants in log scale
+* count/: This folder contains the number of occurrence for each variant in the sequencing data
+  * Input.count: cDNA input library
+  * IGG10.count: low concentration of IgG is used as target (unpublished results)
+  * IGG20.count: medium concentration of IgG is used as target
+  * IGG90.count: high concentration of IgG is used as target (unpublished results)
 
 #MAPPING PIPELINE
 * Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing. Files for forward reads must contain '\_R1\_'. Files for reverse reads must contain '\_R2\_'.
