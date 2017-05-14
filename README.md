@@ -1,4 +1,7 @@
-##FILES
+This README describes the scrips used for the analyses in:
+[Adaptation in protein fitness landscapes is facilitated by indirect paths](https://elifesciences.org/content/5/e16965/article-metrics)
+
+### FILES
 * doc/Epistasis: Epistasis value from [Olson et al. 2014](http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
 * doc/SMutList:  Single mutant read count from [Olson et al. 2014](http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
 * doc/DMutList:  Double mutant read count from [Olson et al. 2014](http://www.cell.com/current-biology/abstract/S0960-9822(14)01268-8)
@@ -16,7 +19,7 @@
   * IGG20.count: medium concentration of IgG is used as target
   * IGG90.count: high concentration of IgG is used as target (unpublished results)
 
-##MAPPING PIPELINE
+### MAPPING PIPELINE
 * Mapper1\_NW.py: Extract nucleotide information from read and demultiplexing. Files for forward reads must contain '\_R1\_'. Files for reverse reads must contain '\_R2\_'.
   * Input file: 
     * fastq/\*.fastq
@@ -65,7 +68,7 @@
   * Output file: 
     * result/Mutfit
 
-##ANALYSIS
+### ANALYSIS
 * Analysis1a\_NW.py: Compute episasis for all partition combinations for HD = 4 (Unused)
   * Input file:  result/Mutfit
   * Output file: result/HD4EpiIGG\*
@@ -201,14 +204,14 @@
 
 * EvolvePotFromWT.sh: Compute evolution potential and accessbility to beneficial mutations from WT
 
-##FITNESS DECOMPOSITION
+### FITNESS DECOMPOSITION
 scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomposition analysis using fourier transform. 
 
 * FitDecomp1.py: Compute fitness information for each subgraphs
   * Input file:  analysis/FitnessDecompose
   * Output file: analysis/FitnessDecomposeFit
 
-##PARSING ADAPTIVE PATHWAY SIMULATIONS
+### PARSING ADAPTIVE PATHWAY SIMULATIONS
 * CompileProbDest.py: Compile simulation results in to a file, count the evolution endpoint, pathway reproducibility and diversity
   * Input file:
     * result/Mutfit
@@ -216,7 +219,7 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
     * simulations/\*/LocalMaxClimb\_\*
   * Output file: analysis/LocalMaxDes\_\*
 
-##PLOTTING SCRIPTS
+### PLOTTING SCRIPTS
 * Plot1\_NW.R: Plot correlation between conditions and also against Anders single/double mutant fitness data
   * Input file: result/Mutfit
   * Output file: graph/G4Cor\_\*.png
@@ -318,7 +321,7 @@ scripts in FitDecomposition/ are written by Lei Dai. They are for fitness decomp
   * Input file: analysis/LocalMaxDes\_\*
   * Outputfile: analysis/LocalMaxDesCluster\_\*
 
-##MISC SCRIPTING
+### MISC SCRIPTING
 * BasicInfo1.R: For extraction of basic statistics from the data (e.g. Total coverage, Maximum fitness, etc.)
   * Input file:  result/Mutfit
   * Output file: BasicInfo.ods and FitnessDiffHD.ods
