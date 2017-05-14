@@ -1,5 +1,4 @@
-This README describes the scrips used for the analyses in:
- 
+This README describes the scrips used for the analyses in: 
 [Adaptation in protein fitness landscapes is facilitated by indirect paths](https://elifesciences.org/content/5/e16965/article-metrics)
 
 ### FILES
