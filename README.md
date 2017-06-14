@@ -1,4 +1,4 @@
-This README describes the scrips used for the analyses in:   
+This README describes the scripts used for the analyses in:   
 [Adaptation in protein fitness landscapes is facilitated by indirect paths](https://elifesciences.org/content/5/e16965/)
 * Raw sequencing reads can be downloaded from NIH SRA database [PRJNA278685](https://www.ncbi.nlm.nih.gov/bioproject/PRJNA278685/)
 
